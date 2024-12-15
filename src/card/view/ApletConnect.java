@@ -123,7 +123,7 @@ public class ApletConnect extends javax.swing.JFrame {
                 } catch (Exception ex) {
                     Logger.getLogger(PINPanel.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(this, "Kết Nối Thất Bại");
-
+                    jProgressBar1.setValue(0);
                 }
             }
 

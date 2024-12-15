@@ -70,8 +70,8 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel5" min="-2" pref="87" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel5" min="-2" pref="73" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="txt_sdt" min="-2" pref="250" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -107,7 +107,7 @@
                                   <Component id="txt_nhaplai" min="-2" pref="145" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="84" max="32767" attributes="0"/>
+                          <EmptySpace pref="86" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -255,7 +255,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="S&#x1ed1; &#x110;i&#x1ec7;n Tho&#x1ea1;i"/>
+            <Property name="text" type="java.lang.String" value="&#x110;i&#x1ec7;n Tho&#x1ea1;i"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_sdt">

@@ -32,8 +32,6 @@ public class User {
         this.bienSo = bienSo;
     }
 
-    
-
     @Override
     public String toString() {
         return "User{" +

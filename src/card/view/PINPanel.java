@@ -129,9 +129,8 @@ public class PINPanel extends javax.swing.JFrame {
                 if (new String(txt_mapin.getPassword()).isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Vui Lòng Nhập Mã Pin");
                 } else {
-
-                    boolean verify = smartCard.verifyPin(new String(txt_mapin.getPassword()));
-                    if (verify) {
+                    int verify = smartCard.verifyPin(new String(txt_mapin.getPassword()));
+                    if (verify == 0x9000) {
                         JOptionPane.showMessageDialog(this, "Đăng Nhập Thành Công");
                         Home home = new Home(smartCard);
                         home.setVisible(true);
