@@ -8,6 +8,7 @@ package card.connect;
 import card.common.Constants;
 import static card.common.Constants.AID;
 import static card.common.Constants.CLA;
+import static card.common.Constants.INS_ATTEMPTS_LEFT;
 import static card.common.Constants.INS_CHANGE_MONEY;
 import static card.common.Constants.INS_CHANGE_PIN;
 import static card.common.Constants.INS_CREATE_INFO;
@@ -81,13 +82,11 @@ public class SmartCard {
 
     public User readAllData() throws Exception {
         CommandAPDU command = new CommandAPDU(CLA, INS_DISPLAY_INFO, P1 ,P2);
-
         ResponseAPDU response = channel.transmit(command);
 
         if (response.getSW() != 0x9000) {
             throw new Exception("Lỗi khi đọc dữ liệu, mã phản hồi: " + Integer.toHexString(response.getSW()));
         }
-
         byte[] data = response.getData();
 
         String id = new String(data, 0, 16).trim();
@@ -97,7 +96,6 @@ public class SmartCard {
         String carNumber = new String(data, 16 + 64 + 16 + 16, 16).trim();
 
         User user = new User(id, name, phone, dob, carNumber);
-
         return user;
     }
 
@@ -162,6 +160,18 @@ public class SmartCard {
              ResponseAPDU response = channel.transmit(command);
             byte[] data = response.getData();
              System.out.println(new String(data));
+            return new String(data);
+        } catch (CardException ex) {
+            Logger.getLogger(SmartCard.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public String attemptsLeft() {
+        CommandAPDU command = new CommandAPDU(CLA, INS_ATTEMPTS_LEFT, P1 ,P2);
+        try {
+            ResponseAPDU response = channel.transmit(command);
+            byte[] data = response.getData();
             return new String(data);
         } catch (CardException ex) {
             Logger.getLogger(SmartCard.class.getName()).log(Level.SEVERE, null, ex);

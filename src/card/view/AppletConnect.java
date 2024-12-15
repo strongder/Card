@@ -15,7 +15,7 @@ import javax.swing.Timer;
  *
  * @author admin
  */
-public class ApletConnect extends javax.swing.JFrame {
+public class AppletConnect extends javax.swing.JFrame {
 
     /**
      * Creates new form ApletConnect
@@ -23,7 +23,7 @@ public class ApletConnect extends javax.swing.JFrame {
     SmartCard smartCard;
     boolean connected;
 
-    public ApletConnect() {
+    public AppletConnect() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -114,7 +114,7 @@ public class ApletConnect extends javax.swing.JFrame {
                     connected = smartCard.connectCard();
                     if (connected) {
                         JOptionPane.showMessageDialog(this, "Kết Nối Thành Công");
-                        PINPanel nav = new PINPanel();
+                        PINPanel nav = new PINPanel(smartCard);
                         nav.setVisible(true);
                         this.setVisible(false);
                     } else {
@@ -122,7 +122,7 @@ public class ApletConnect extends javax.swing.JFrame {
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(PINPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(this, "Kết Nối Thất Bại");
+                    JOptionPane.showMessageDialog(this, "Kết Nối Thất Bại", "ERROR", JOptionPane.ERROR_MESSAGE);
                     jProgressBar1.setValue(0);
                 }
             }
@@ -149,20 +149,21 @@ public class ApletConnect extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ApletConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AppletConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ApletConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AppletConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ApletConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AppletConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ApletConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AppletConnect.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ApletConnect().setVisible(true);
+                new AppletConnect().setVisible(true);
             }
         });
     }

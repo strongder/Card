@@ -26,17 +26,11 @@ public class UpdateUser extends javax.swing.JFrame {
      */
     SmartCard smartCard;
     boolean connected;
+
     public UpdateUser() {
-        this.setLocationRelativeTo(null);
         initComponents();
         smartCard = new SmartCard();
-        try {
-            connected = smartCard.connectCard();
-            disPlay();
-        } catch (Exception ex) {
-            Logger.getLogger(PINPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -127,7 +121,7 @@ public class UpdateUser extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Số Điện Thoại");
+        jLabel6.setText("Điện Thoại");
 
         txt_sdt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,14 +176,6 @@ public class UpdateUser extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txt_bienso, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_sdt, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txt_ngaysinh, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txt_ten, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -197,19 +183,25 @@ public class UpdateUser extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(107, Short.MAX_VALUE))
+                        .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_sdt, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_ngaysinh, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -333,48 +325,49 @@ public class UpdateUser extends javax.swing.JFrame {
         String sdt = txt_sdt.getText();
         String bienso = txt_bienso.getText();
 
-        boolean checknull = checkNull(ten, ngaysinh, sdt, bienso);
-        if (checknull) {
+        if (checkNull(ten, ngaysinh, sdt, bienso)) {
             JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin");
-        } else {
-            if (ten.length() < 6) {
-                JOptionPane.showMessageDialog(this, "Vui lòng điền tên chính xác");
+            return;
+        }
+
+        if (ten.length() < 6) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền tên chính xác");
+            return;
+        }
+
+        if (!checkNgaySinh(ngaysinh)) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh đúng định dạng dd/mm/yyyy");
+            return;
+        }
+
+        if (!checkSoDienThoai(sdt)) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập chính xác số điện thoại");
+            return;
+        }
+
+        if (!checkBienSo(bienso)) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng biển số xe");
+            return;
+        }
+        
+        User user = new User();
+        user.setId(user.generateId());
+        user.setFullName(ten);
+        user.setDateOfBirth(ngaysinh);
+        user.setPhoneNumber(sdt);
+        user.setBienSo(bienso);
+
+        try {
+            if (smartCard.sendAllData(user)) {
+                JOptionPane.showMessageDialog(this, "Thay đổi thông tin thành công", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+                PINPanel pin = new PINPanel(smartCard);
+                this.setVisible(false);
+                pin.setVisible(true);
             } else {
-                boolean checkNgaySinh = checkNgaySinh(ngaysinh);
-                if (!checkNgaySinh) {
-                    JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh đúng định dạng dd/mm/yyyy");
-                } else {
-                    boolean checkSoDienThoai = checkSoDienThoai(sdt);
-                    if (!checkSoDienThoai) {
-                        JOptionPane.showMessageDialog(this, "Vui lòng nhập chính xác số điện thoại");
-                    } else {
-                        boolean checkBienSo = checkBienSo(bienso);
-                        if (!checkBienSo) {
-                            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng biển số xe");
-                        } else {
-                            User user = new User();
-                            user.setId(user.generateId());
-                            user.setFullName(ten);
-                            user.setDateOfBirth(ngaysinh);
-                            user.setPhoneNumber(sdt);
-                            user.setBienSo(bienso);
-                            try {
-                                if (smartCard.sendAllData(user)) {
-                                    JOptionPane.showMessageDialog(this, "Tạo thông tin thành công");
-                                    Home home = new Home(smartCard);
-                                    this.setVisible(false);
-                                    disPlay(home);
-                                    home.setVisible(true);
-                                } else {
-                                    JOptionPane.showMessageDialog(this, "Tạo thông tin không thành công");
-                                }
-                            } catch (Exception ex) {
-                                Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    }
-                }
+                JOptionPane.showMessageDialog(this, "Đổi thông tin thất bại", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
+        } catch (Exception ex) {
+            Logger.getLogger(CreateCard.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btn_capnhatActionPerformed
 
@@ -391,14 +384,15 @@ public class UpdateUser extends javax.swing.JFrame {
         User user = smartCard.readAllData();
         home.setData(user);
     }
-     private boolean checkNull(String ten, String ngaysinh, String sdt, String bienso) {
+
+    private boolean checkNull(String ten, String ngaysinh, String sdt, String bienso) {
         if (ten == null && ngaysinh == null && sdt == null && bienso == null) {
             return true;
         }
         return false;
     }
-      public void disPlay()
-    {
+
+    public void disPlay() {
         try {
             User user = smartCard.readAllData();
             setData(user);
@@ -406,14 +400,14 @@ public class UpdateUser extends javax.swing.JFrame {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void setData(User user)
-    {
+
+    public void setData(User user) {
         txt_id.setText(user.getId());
         txt_ten.setText(user.getFullName());
         txt_sdt.setText(user.getPhoneNumber());
         txt_ngaysinh.setText(user.getDateOfBirth());
         txt_bienso.setText(user.getBienSo());
-      }
+    }
 
     private boolean checkNgaySinh(String ngaysinh) {
         String regex = "^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/\\d{4}$";
@@ -432,6 +426,7 @@ public class UpdateUser extends javax.swing.JFrame {
         String regex = "^[1-9]{2}[A-Z]-\\d{5}$";
         return bienso != null && bienso.matches(regex);
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

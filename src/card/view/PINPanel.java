@@ -19,17 +19,13 @@ public class PINPanel extends javax.swing.JFrame {
     /**
      * Creates new form PINPanel
      */
-    SmartCard smartCard;
-    boolean connected;
+    public SmartCard smartCard;
+    private int attemptsLeft;
 
-    public PINPanel() {
+    public PINPanel(SmartCard smartCard) {
         initComponents();
-        smartCard = new SmartCard();
-        try {
-            connected = smartCard.connectCard();
-        } catch (Exception ex) {
-            Logger.getLogger(PINPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.smartCard = smartCard;
+        
         this.setLocationRelativeTo(null);
     }
 
@@ -125,23 +121,19 @@ public class PINPanel extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            if (connected) {
-                if (new String(txt_mapin.getPassword()).isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Vui Lòng Nhập Mã Pin");
-                } else {
-                    int verify = smartCard.verifyPin(new String(txt_mapin.getPassword()));
-                    if (verify == 0x9000) {
-                        JOptionPane.showMessageDialog(this, "Đăng Nhập Thành Công");
-                        Home home = new Home(smartCard);
-                        home.setVisible(true);
-                        this.setVisible(false);
-
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Đăng Nhập Thất Bại");
-                    }
-                }
+            if (new String(txt_mapin.getPassword()).isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui Lòng Nhập Mã Pin");
             } else {
-                JOptionPane.showMessageDialog(this, "Lỗi Hệ Thống");
+                int verify = smartCard.verifyPin(new String(txt_mapin.getPassword()));
+                if (verify == 0x9000) {
+                    JOptionPane.showMessageDialog(this, "Đăng Nhập Thành Công");
+                    Home home = new Home(smartCard);
+                    home.setVisible(true);
+                    this.setVisible(false);
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Mã pin sai bạn còn lại "+ attemptsLeft +" lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(PINPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,45 +142,16 @@ public class PINPanel extends javax.swing.JFrame {
 
     private void btn_khoitaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khoitaoActionPerformed
         this.setVisible(false);
-        CreateCard panel = new CreateCard();
+        CreateCard panel = new CreateCard(smartCard);
         panel.setVisible(true);
     }//GEN-LAST:event_btn_khoitaoActionPerformed
-
+    public void getAttemptsLeft()
+    {
+        this.attemptsLeft = Integer.parseInt(smartCard.attemptsLeft());
+    }
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PINPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PINPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PINPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PINPanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PINPanel().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_khoitao;

@@ -111,29 +111,23 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="lb_Id" min="-2" pref="142" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jLabel4" alignment="0" min="-2" pref="76" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel2" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
-                                  <Component id="jLabel3" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
-                                  <Component id="jLabel5" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel2" alignment="0" pref="66" max="32767" attributes="0"/>
+                                  <Component id="jLabel3" alignment="0" pref="66" max="32767" attributes="0"/>
+                                  <Component id="jLabel5" alignment="0" pref="66" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lb_Id1" min="-2" pref="142" max="-2" attributes="0"/>
-                                  <Component id="lb_Id2" min="-2" pref="142" max="-2" attributes="0"/>
-                                  <Component id="lb_Id4" min="-2" pref="142" max="-2" attributes="0"/>
+                                  <Component id="lb_name" min="-2" pref="142" max="-2" attributes="0"/>
+                                  <Component id="lb_dob" min="-2" pref="142" max="-2" attributes="0"/>
+                                  <Component id="lb_carNumber" min="-2" pref="142" max="-2" attributes="0"/>
+                                  <Component id="lb_phone" min="-2" pref="142" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                       <EmptySpace min="96" pref="92" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="293" max="32767" attributes="0"/>
-                          <Component id="lb_Id5" min="-2" pref="142" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -158,19 +152,22 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jLabel2" min="-2" pref="23" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="lb_Id1" min="-2" pref="23" max="-2" attributes="0"/>
+                                          <Component id="lb_name" min="-2" pref="23" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel3" min="-2" pref="23" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="lb_Id2" min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Component id="lb_dob" min="-2" pref="23" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jLabel4" min="-2" pref="23" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel4" min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Component id="lb_phone" min="-2" pref="23" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="jLabel5" min="-2" pref="23" max="-2" attributes="0"/>
-                                  <Component id="lb_Id4" min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Component id="lb_carNumber" min="-2" pref="23" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -181,13 +178,6 @@
                           </Group>
                       </Group>
                       <EmptySpace pref="44" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
-                          <Component id="lb_Id5" min="-2" pref="23" max="-2" attributes="0"/>
-                          <EmptySpace pref="131" max="32767" attributes="0"/>
-                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -227,7 +217,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
               <Properties>
-                <Property name="text" type="java.lang.String" value="S&#x1ed1; &#x110;i&#x1ec7;n Tho&#x1ea1;i"/>
+                <Property name="text" type="java.lang.String" value="&#x110;i&#x1ec7;n Tho&#x1ea1;i"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
@@ -252,15 +242,15 @@
             </Component>
             <Component class="javax.swing.JLabel" name="lb_Id">
             </Component>
-            <Component class="javax.swing.JLabel" name="lb_Id1">
+            <Component class="javax.swing.JLabel" name="lb_name">
             </Component>
-            <Component class="javax.swing.JLabel" name="lb_Id2">
+            <Component class="javax.swing.JLabel" name="lb_dob">
             </Component>
             <Component class="javax.swing.JLabel" name="lb_Id3">
             </Component>
-            <Component class="javax.swing.JLabel" name="lb_Id4">
+            <Component class="javax.swing.JLabel" name="lb_carNumber">
             </Component>
-            <Component class="javax.swing.JLabel" name="lb_Id5">
+            <Component class="javax.swing.JLabel" name="lb_phone">
             </Component>
           </SubComponents>
         </Container>
@@ -317,6 +307,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ed5;i M&#xe3; Pin"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_doimapinActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btn_capnhat">
               <Properties>

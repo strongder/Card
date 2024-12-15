@@ -30,9 +30,9 @@ public class Constants {
     public static final byte INS_CHANGE_IMAGE = 0x03;
     public static final byte INS_DISPLAY_IMAGE = 0x04;
     
-    public static final byte INS_CHANGE_MONEY = 0x05;
-    public static final byte INS_DISPLAY_MONEY = 0x05;
-     
+    public static final byte INS_CHANGE_MONEY = 0x10;
+    public static final byte INS_DISPLAY_MONEY = 0x11;
+     public static final byte INS_ATTEMPTS_LEFT = 0x20;
     public static final String CARD_BLOCK = "Thẻ đã bị khóa!";
     
     public static int ENTRY_CAR = 0;

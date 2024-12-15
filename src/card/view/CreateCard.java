@@ -26,7 +26,7 @@ public class CreateCard extends javax.swing.JFrame {
      */
     SmartCard smartCard;
 
-    public CreateCard() {
+    public CreateCard(SmartCard smartCard) {
         initComponents();
         this.smartCard = smartCard;
         this.setLocationRelativeTo(null);
@@ -343,59 +343,64 @@ public class CreateCard extends javax.swing.JFrame {
         String mapin = new String(txt_mapin.getPassword());
         String nhaplai = new String(txt_nhaplai.getPassword());
 
-        boolean checknull = checkNull(ten, ngaysinh, sdt, bienso);
-        if (checknull) {
+        if (checkNull(ten, ngaysinh, sdt, bienso)) {
             JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin");
-        } else {
-            if (ten.length() < 6) {
-                JOptionPane.showMessageDialog(this, "Vui lòng điền tên chính xác");
+            return;
+        }
+
+        if (ten.length() < 6) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền tên chính xác");
+            return;
+        }
+
+        if (!checkNgaySinh(ngaysinh)) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh đúng định dạng dd/mm/yyyy");
+            return;
+        }
+
+        if (!checkSoDienThoai(sdt)) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập chính xác số điện thoại");
+            return;
+        }
+
+        if (!checkBienSo(bienso)) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng biển số xe");
+            return;
+        }
+
+        if (!checkMaPin(mapin, nhaplai)) {
+            return;
+        }
+        int check = smartCard.createPin(mapin);
+        if(check != 0x9000)
+        {
+            JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        } 
+        User user = new User();
+        user.setId(user.generateId());
+        user.setFullName(ten);
+        user.setDateOfBirth(ngaysinh);
+        user.setPhoneNumber(sdt);
+        user.setBienSo(bienso);
+
+        try {
+            if (smartCard.sendAllData(user)) {
+                JOptionPane.showMessageDialog(this, "Tạo thẻ thành công");
+                PINPanel pin = new PINPanel(smartCard);
+                this.setVisible(false);
+                pin.setVisible(true);
             } else {
-                boolean checkNgaySinh = checkNgaySinh(ngaysinh);
-                if (!checkNgaySinh) {
-                    JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh đúng định dạng dd/mm/yyyy");
-                } else {
-                    boolean checkSoDienThoai = checkSoDienThoai(sdt);
-                    if (!checkSoDienThoai) {
-                        JOptionPane.showMessageDialog(this, "Vui lòng nhập chính xác số điện thoại");
-                    } else {
-                        boolean checkBienSo = checkBienSo(bienso);
-                        if (!checkBienSo) {
-                            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng biển số xe");
-                        } else {
-                            boolean checkMaPin = checkMaPin(mapin, nhaplai);
-                            if (!checkMaPin) {
-                                JOptionPane.showMessageDialog(this, "Vui lòng kiểm tra lại mã Pin");
-                            } else {
-                                User user = new User();
-                                user.setId(user.generateId());
-                                user.setFullName(ten);
-                                user.setDateOfBirth(ngaysinh);
-                                user.setPhoneNumber(sdt);
-                                user.setBienSo(bienso);
-                                try {
-                                    if (smartCard.sendAllData(user)) {
-                                        JOptionPane.showMessageDialog(this, "Tạo thẻ thành công");
-                                        PINPanel pin = new PINPanel();
-                                        this.setVisible(false);
-                                        //disPlay(home);
-                                        pin.setVisible(true);
-                                    } else {
-                                        JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công");
-                                    }
-                                } catch (Exception ex) {
-                                    Logger.getLogger(CreateCard.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        }
-                    }
-                }
+                JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
+        } catch (Exception ex) {
+            Logger.getLogger(CreateCard.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btn_khoitaoActionPerformed
 
     private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
         this.setVisible(false);
-        PINPanel panel = new PINPanel();
+        PINPanel panel = new PINPanel(smartCard);
         panel.setVisible(true);
     }//GEN-LAST:event_btn_thoatActionPerformed
 
@@ -428,47 +433,23 @@ public class CreateCard extends javax.swing.JFrame {
     }
 
     private boolean checkMaPin(String mapin, String nhaplai) {
-        if (mapin == null || nhaplai == null) {
-            return false;
+         if(!nhaplai.equals(mapin))
+        {
+           JOptionPane.showMessageDialog(this, "Mã pin nhập lại không khớp", "WARRING", JOptionPane.WARNING_MESSAGE);
+           return false;
         }
-        String regex = "^\\d{6}$";
+        if (mapin == null || nhaplai == null) {
+           JOptionPane.showMessageDialog(this, "Điền đầy đủ thông tin", "WARRING", JOptionPane.WARNING_MESSAGE);
+           return false;
+        }
+        String regex = "^\\d{6,10}$";
         if (!mapin.matches(regex)) {
+            JOptionPane.showMessageDialog(this, "Mã pin phải từ 6 đến 10 số", "WARRING", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return mapin.equals(nhaplai);
     }
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateCard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateCard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateCard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateCard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CreateCard().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_chonanh;

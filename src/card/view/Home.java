@@ -24,6 +24,7 @@ public class Home extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         initComponents();
         this.smartCard = smartCard;
+        this.setLocationRelativeTo(null);
         disPlay();
     }
 
@@ -48,11 +49,11 @@ public class Home extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         lb_Id = new javax.swing.JLabel();
-        lb_Id1 = new javax.swing.JLabel();
-        lb_Id2 = new javax.swing.JLabel();
+        lb_name = new javax.swing.JLabel();
+        lb_dob = new javax.swing.JLabel();
         lb_Id3 = new javax.swing.JLabel();
-        lb_Id4 = new javax.swing.JLabel();
-        lb_Id5 = new javax.swing.JLabel();
+        lb_carNumber = new javax.swing.JLabel();
+        lb_phone = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btn_naptien = new javax.swing.JButton();
         btn_doimapin = new javax.swing.JButton();
@@ -83,7 +84,7 @@ public class Home extends javax.swing.JFrame {
 
         jLabel3.setText("Ngày Sinh");
 
-        jLabel4.setText("Số Điện Thoại");
+        jLabel4.setText("Điện Thoại");
 
         jLabel5.setText("Biển Số");
 
@@ -112,23 +113,19 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lb_Id, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lb_Id1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lb_Id2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lb_Id4, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lb_name, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_dob, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_carNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_phone, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(92, 92, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addContainerGap(293, Short.MAX_VALUE)
-                    .addComponent(lb_Id5, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(92, 92, 92)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,27 +145,24 @@ public class Home extends javax.swing.JFrame {
                                             .addComponent(lb_Id, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lb_Id1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lb_name, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lb_Id2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lb_dob, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lb_phone, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lb_Id4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lb_carNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lb_Id3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(44, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(120, 120, 120)
-                    .addComponent(lb_Id5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(131, Short.MAX_VALUE)))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -181,6 +175,11 @@ public class Home extends javax.swing.JFrame {
         });
 
         btn_doimapin.setText("Đổi Mã Pin");
+        btn_doimapin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_doimapinActionPerformed(evt);
+            }
+        });
 
         btn_capnhat.setText("Cập Nhật Thông Tin");
         btn_capnhat.addActionListener(new java.awt.event.ActionListener() {
@@ -285,9 +284,15 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.setVisible(false);
         smartCard.disconnectCard();
-        PINPanel panel = new PINPanel();
+        AppletConnect panel = new AppletConnect();
         panel.setVisible(true);
     }//GEN-LAST:event_btn_thoatActionPerformed
+
+    private void btn_doimapinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_doimapinActionPerformed
+        
+        ChangePin changePin = new ChangePin(smartCard);
+        changePin.setVisible(true);
+    }//GEN-LAST:event_btn_doimapinActionPerformed
      
     /**
      * @param args the command line arguments
@@ -304,10 +309,10 @@ public class Home extends javax.swing.JFrame {
     public void setData(User user)
     {
         lb_Id.setText(user.getId());
-        lb_Id1.setText(user.getFullName());
-        lb_Id5.setText(user.getPhoneNumber());
-        lb_Id2.setText(user.getDateOfBirth());
-        lb_Id4.setText(user.getBienSo());
+        lb_name.setText(user.getFullName());
+        lb_phone.setText(user.getPhoneNumber());
+        lb_dob.setText(user.getDateOfBirth());
+        lb_carNumber.setText(user.getBienSo());
       }
   
     
@@ -329,10 +334,10 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lb_Id;
-    private javax.swing.JLabel lb_Id1;
-    private javax.swing.JLabel lb_Id2;
     private javax.swing.JLabel lb_Id3;
-    private javax.swing.JLabel lb_Id4;
-    private javax.swing.JLabel lb_Id5;
+    private javax.swing.JLabel lb_carNumber;
+    private javax.swing.JLabel lb_dob;
+    private javax.swing.JLabel lb_name;
+    private javax.swing.JLabel lb_phone;
     // End of variables declaration//GEN-END:variables
 }
