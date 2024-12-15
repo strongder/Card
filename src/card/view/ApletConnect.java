@@ -25,6 +25,7 @@ public class ApletConnect extends javax.swing.JFrame {
 
     public ApletConnect() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -113,7 +114,7 @@ public class ApletConnect extends javax.swing.JFrame {
                     connected = smartCard.connectCard();
                     if (connected) {
                         JOptionPane.showMessageDialog(this, "Kết Nối Thành Công");
-                        NavigationPanel nav = new NavigationPanel();
+                        PINPanel nav = new PINPanel();
                         nav.setVisible(true);
                         this.setVisible(false);
                     } else {

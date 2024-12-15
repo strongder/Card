@@ -7,8 +7,13 @@ package card.view;
 
 import card.connect.SmartCard;
 import card.model.User;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,11 +24,12 @@ public class CreateUser extends javax.swing.JFrame {
     /**
      * Creates new form CreateUser
      */
-    
     SmartCard smartCard;
+
     public CreateUser(SmartCard smartCard) {
         initComponents();
         this.smartCard = smartCard;
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -50,6 +56,7 @@ public class CreateUser extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txt_bienso = new javax.swing.JTextField();
         btn_khoitao = new javax.swing.JButton();
+        btn_thoat = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -94,7 +101,7 @@ public class CreateUser extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setText("NHẬP THÔNG TIN THẺ");
+        jLabel2.setText("NHẬP THÔNG TIN NGƯỜI DÙNG");
 
         jLabel3.setText("Họ và Tên");
 
@@ -135,6 +142,13 @@ public class CreateUser extends javax.swing.JFrame {
             }
         });
 
+        btn_thoat.setText("Thoát");
+        btn_thoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_thoatActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -150,7 +164,6 @@ public class CreateUser extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -166,13 +179,16 @@ public class CreateUser extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txt_bienso, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txt_sdt, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                            .addComponent(txt_sdt, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jLabel2)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(78, 78, 78)
                         .addComponent(btn_chonanh, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(276, 276, 276)
-                        .addComponent(btn_khoitao, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_khoitao, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54)
+                        .addComponent(btn_thoat, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -202,7 +218,9 @@ public class CreateUser extends javax.swing.JFrame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_bienso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_khoitao, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_khoitao, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_thoat, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(59, 59, 59))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 61, Short.MAX_VALUE)
@@ -213,7 +231,7 @@ public class CreateUser extends javax.swing.JFrame {
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("KHỞI TẠO THÔNG TIN THẺ");
+        jLabel1.setText("KHỞI TẠO THÔNG TIN NGƯỜI DÙNG");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -222,10 +240,10 @@ public class CreateUser extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 12, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(265, 265, 265)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(231, 231, 231))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,16 +259,102 @@ public class CreateUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_chonanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonanhActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+
+        // Chỉ cho phép chọn file
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        // Bộ lọc để chỉ chọn các file ảnh
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true; // Cho phép chọn thư mục
+                }
+                String fileName = f.getName().toLowerCase();
+                return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".bmp") || fileName.endsWith(".gif");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Image Files (*.jpg, *.jpeg, *.png, *.bmp, *.gif)";
+            }
+        });
+
+        // Hiển thị hộp thoại mở file
+        int returnValue = fileChooser.showOpenDialog(this);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            // Lấy file đã chọn
+            File selectedFile = fileChooser.getSelectedFile();
+
+            // Hiển thị đường dẫn file hoặc xử lý ảnh
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+
+            // Ví dụ: Hiển thị ảnh trong JLabel
+            try {
+                ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
+                // Giả sử bạn có một JLabel tên là lblImage
+                //lblImage.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Không thể hiển thị ảnh!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            System.out.println("No file selected.");
+        }
     }//GEN-LAST:event_btn_chonanhActionPerformed
 
-    private void txt_tenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tenActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_tenActionPerformed
+    private void btn_khoitaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khoitaoActionPerformed
+        String ten = txt_ten.getText();
+        String ngaysinh = txt_ngaysinh.getText();
+        String sdt = txt_sdt.getText();
+        String bienso = txt_bienso.getText();
 
-    private void txt_ngaysinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ngaysinhActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_ngaysinhActionPerformed
+        boolean checknull = checkNull(ten, ngaysinh, sdt, bienso);
+        if (checknull) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin");
+        } else {
+            if (ten.length() < 6) {
+                JOptionPane.showMessageDialog(this, "Vui lòng điền tên chính xác");
+            } else {
+                boolean checkNgaySinh = checkNgaySinh(ngaysinh);
+                if (!checkNgaySinh) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh đúng định dạng dd/mm/yyyy");
+                } else {
+                    boolean checkSoDienThoai = checkSoDienThoai(sdt);
+                    if (!checkSoDienThoai) {
+                        JOptionPane.showMessageDialog(this, "Vui lòng nhập chính xác số điện thoại");
+                    } else {
+                        boolean checkBienSo = checkBienSo(bienso);
+                        if (!checkBienSo) {
+                            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng biển số xe");
+                        } else {
+                            User user = new User();
+                            user.setId(user.generateId());
+                            user.setFullName(ten);
+                            user.setDateOfBirth(ngaysinh);
+                            user.setPhoneNumber(sdt);
+                            user.setBienSo(bienso);
+                            try {
+                                if (smartCard.sendAllData(user)) {
+                                    JOptionPane.showMessageDialog(this, "Tạo thông tin thành công");
+                                    Home home = new Home(smartCard);
+                                    this.setVisible(false);
+                                    disPlay(home);
+                                    home.setVisible(true);
+                                } else {
+                                    JOptionPane.showMessageDialog(this, "Tạo thông tin không thành công");
+                                }
+                            } catch (Exception ex) {
+                                Logger.getLogger(CreateUser.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }//GEN-LAST:event_btn_khoitaoActionPerformed
 
     private void txt_sdtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_sdtActionPerformed
         // TODO add your handling code here:
@@ -260,40 +364,55 @@ public class CreateUser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_biensoActionPerformed
 
-    private void btn_khoitaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khoitaoActionPerformed
-        User user = new User();
-        user.setId(user.generateId());
-        user.setFullName(txt_ten.getText());
-        user.setDateOfBirth(txt_ngaysinh.getText());
-        user.setPhoneNumber(txt_sdt.getText());
-        user.setBienSo(txt_bienso.getText());
-        try {
-            if(smartCard.sendAllData(user)){
-                Home home = new Home(smartCard);
-                this.setVisible(false);
-                disPlay(home);
-                home.setVisible(true);
-            }
-            else{
-                    System.out.println("Them thong tin khong thanh cong");
-                }
-        } catch (Exception ex) {
-            Logger.getLogger(CreateUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btn_khoitaoActionPerformed
-    public void disPlay(Home home) throws Exception
-    {
-        User user =  smartCard.readAllData();
+    private void txt_ngaysinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ngaysinhActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_ngaysinhActionPerformed
+
+    private void txt_tenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_tenActionPerformed
+
+    private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
+        this.setVisible(false);
+        Home home = new Home(smartCard);
+        home.setVisible(true);
+    }//GEN-LAST:event_btn_thoatActionPerformed
+    public void disPlay(Home home) throws Exception {
+        User user = smartCard.readAllData();
         home.setData(user);
     }
+
     /**
      * @param args the command line arguments
      */
-    
+    private boolean checkNull(String ten, String ngaysinh, String sdt, String bienso) {
+        if (ten == null && ngaysinh == null && sdt == null && bienso == null) {
+            return true;
+        }
+        return false;
+    }
 
+    private boolean checkNgaySinh(String ngaysinh) {
+        String regex = "^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/\\d{4}$";
+        if (ngaysinh == null || !Pattern.matches(regex, ngaysinh)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkSoDienThoai(String sdt) {
+        String regex = "^0\\d{9}$";
+        return sdt != null && sdt.matches(regex);
+    }
+
+    private boolean checkBienSo(String bienso) {
+        String regex = "^[1-9]{2}[A-Z]-\\d{5}$";
+        return bienso != null && bienso.matches(regex);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_chonanh;
     private javax.swing.JButton btn_khoitao;
+    private javax.swing.JButton btn_thoat;
     private java.awt.Canvas canvas1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
