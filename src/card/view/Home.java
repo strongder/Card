@@ -275,7 +275,9 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_capnhatActionPerformed
 
     private void btn_naptienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_naptienActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        AddMoney panel = new AddMoney();
+        panel.setVisible(true);
     }//GEN-LAST:event_btn_naptienActionPerformed
 
     private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
