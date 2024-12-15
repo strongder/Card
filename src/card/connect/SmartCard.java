@@ -5,7 +5,18 @@
  */
 package card.connect;
 
+import card.common.Constants;
 import static card.common.Constants.AID;
+import static card.common.Constants.CLA;
+import static card.common.Constants.INS_CHANGE_MONEY;
+import static card.common.Constants.INS_CHANGE_PIN;
+import static card.common.Constants.INS_CREATE_INFO;
+import static card.common.Constants.INS_CREATE_PIN;
+import static card.common.Constants.INS_DISPLAY_INFO;
+import static card.common.Constants.INS_DISPLAY_MONEY;
+import static card.common.Constants.INS_VERIFY;
+import static card.common.Constants.P1;
+import static card.common.Constants.P2;
 import card.model.User;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,8 +40,7 @@ public class SmartCard {
         card = terminal.connect("T=0");
         channel = card.getBasicChannel();
 
-        byte[] aid = {0x11, 0x22, 0x33, 0x44, 0x55, 0x00};
-        CommandAPDU selectApplet = new CommandAPDU(0x00, 0xA4, 0x04, 0x00, aid);
+        CommandAPDU selectApplet = new CommandAPDU(0x00, 0xA4, 0x04, 0x00, AID);
         ResponseAPDU response = channel.transmit(selectApplet);
         return response.getSW() == 0x9000;
     }
@@ -60,7 +70,7 @@ public class SmartCard {
         System.arraycopy(dobBytes, 0, allData, 16 + 64 + 16, dobBytes.length);
         System.arraycopy(carNumberBytes, 0, allData, 16 + 64 + 16 + 16, carNumberBytes.length);
 
-        CommandAPDU command = new CommandAPDU((byte) 0xB0, (byte) 0x01, (byte) 0x00, (byte) 0x00, allData);
+        CommandAPDU command = new CommandAPDU(CLA, INS_CREATE_INFO, P1 ,P2, allData);
         ResponseAPDU response = channel.transmit(command);
 
         if (response.getSW() != 0x9000) {
@@ -70,7 +80,8 @@ public class SmartCard {
     }
 
     public User readAllData() throws Exception {
-        CommandAPDU command = new CommandAPDU((byte) 0xB0, (byte) 0x02, (byte) 0x00, (byte) 0x00);
+        CommandAPDU command = new CommandAPDU(CLA, INS_DISPLAY_INFO, P1 ,P2);
+
         ResponseAPDU response = channel.transmit(command);
 
         if (response.getSW() != 0x9000) {
@@ -92,7 +103,7 @@ public class SmartCard {
 
     public int createPin(String pin) {
         byte[] pinBytes = pin.getBytes();
-        CommandAPDU command = new CommandAPDU((byte) 0xB0, (byte) 0x03, (byte) 0x00, (byte) 0x00, pinBytes);
+        CommandAPDU command = new CommandAPDU(CLA, INS_CREATE_PIN, P1 ,P2, pinBytes);
 
         try {
             ResponseAPDU response = channel.transmit(command);
@@ -105,7 +116,8 @@ public class SmartCard {
 
     public int changePin(String pin)  {
         byte[] pinBytes = pin.getBytes();
-        CommandAPDU command = new CommandAPDU((byte) 0xB0, (byte) 0x03, (byte) 0x00, (byte) 0x00, pinBytes);
+        CommandAPDU command = new CommandAPDU(CLA, INS_CHANGE_PIN, P1 ,P2, pinBytes);
+
         try {
             ResponseAPDU response = channel.transmit(command);
             return response.getSW();
@@ -115,21 +127,11 @@ public class SmartCard {
         }
     }
 
-    public String readPin() throws Exception {
-        CommandAPDU command = new CommandAPDU((byte) 0xB0, (byte) 0x04, (byte) 0x00, (byte) 0x00);
-        ResponseAPDU response = channel.transmit(command);
-        if (response.getSW() != 0x9000) {
-            throw new Exception("Lỗi khi đọc dữ liệu, mã phản hồi: " + Integer.toHexString(response.getSW()));
-        }
-
-        byte[] data = response.getData();
-        System.out.println(new String(data));
-        return new String(data);
-    }
 
     public int verifyPin(String pin) {
         byte[] pinBytes = pin.getBytes();
-        CommandAPDU command = new CommandAPDU((byte) 0xB0, (byte) 0x05, (byte) 0x00, (byte) 0x00, pinBytes);
+        CommandAPDU command = new CommandAPDU(CLA, INS_VERIFY, P1 ,P2, pinBytes);
+
         try {
             ResponseAPDU response = channel.transmit(command);
             return response.getSW();
@@ -142,7 +144,8 @@ public class SmartCard {
     
     public int topUpcard(Double money) {
         byte[] moneyBytes = String.valueOf(money).getBytes();
-        CommandAPDU command = new CommandAPDU((byte) 0xB0, (byte) 0x03, (byte) 0x00, (byte) 0x00, moneyBytes);
+        CommandAPDU command = new CommandAPDU(CLA, INS_CHANGE_MONEY, P1 ,P2, moneyBytes);
+
 
         try {
             ResponseAPDU response = channel.transmit(command);
@@ -154,10 +157,9 @@ public class SmartCard {
     }
     
     public String readMoney() {
-        CommandAPDU command = new CommandAPDU((byte) 0xB0, (byte) 0x04, (byte) 0x00, (byte) 0x00);
-        ResponseAPDU response;
+        CommandAPDU command = new CommandAPDU(CLA, INS_DISPLAY_MONEY, P1 ,P2);
         try {
-            response = channel.transmit(command);
+             ResponseAPDU response = channel.transmit(command);
             byte[] data = response.getData();
              System.out.println(new String(data));
             return new String(data);

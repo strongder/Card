@@ -383,7 +383,7 @@ public class CreateCard extends javax.swing.JFrame {
                                         JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công");
                                     }
                                 } catch (Exception ex) {
-                                    Logger.getLogger(CreateUser.class.getName()).log(Level.SEVERE, null, ex);
+                                    Logger.getLogger(CreateCard.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
                         }

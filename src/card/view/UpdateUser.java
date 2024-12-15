@@ -369,7 +369,7 @@ public class UpdateUser extends javax.swing.JFrame {
                                     JOptionPane.showMessageDialog(this, "Tạo thông tin không thành công");
                                 }
                             } catch (Exception ex) {
-                                Logger.getLogger(CreateUser.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     }
