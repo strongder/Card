@@ -96,7 +96,7 @@ public class UserDAO {
     }
      
       public static User getUserWithMaxId() {
-        String sql = "SELECT * FROM users WHERE id = (SELECT MAX(id) FROM users)";
+        String sql = "SELECT * FROM user WHERE id = (SELECT MAX(id) FROM user)";
         User user = null;
 
         try {
