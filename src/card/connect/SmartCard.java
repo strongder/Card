@@ -19,6 +19,8 @@ import static card.common.Constants.INS_VERIFY;
 import static card.common.Constants.P1;
 import static card.common.Constants.P2;
 import card.model.User;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -143,8 +145,6 @@ public class SmartCard {
     public int topUpcard(Double money) {
         byte[] moneyBytes = String.valueOf(money).getBytes();
         CommandAPDU command = new CommandAPDU(CLA, INS_CHANGE_MONEY, P1 ,P2, moneyBytes);
-
-
         try {
             ResponseAPDU response = channel.transmit(command);
             return response.getSW();
@@ -153,14 +153,14 @@ public class SmartCard {
             return -1;
         }
     }
-    
     public String readMoney() {
         CommandAPDU command = new CommandAPDU(CLA, INS_DISPLAY_MONEY, P1 ,P2);
         try {
              ResponseAPDU response = channel.transmit(command);
             byte[] data = response.getData();
-             System.out.println(new String(data));
-            return new String(data);
+            String money = new String(data, 0, 16).trim();
+            System.out.println(money);
+            return money;
         } catch (CardException ex) {
             Logger.getLogger(SmartCard.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -168,15 +168,19 @@ public class SmartCard {
     }
     
     public String attemptsLeft() {
-        CommandAPDU command = new CommandAPDU(CLA, INS_ATTEMPTS_LEFT, P1 ,P2);
-        try {
-            ResponseAPDU response = channel.transmit(command);
-            byte[] data = response.getData();
-            return new String(data);
-        } catch (CardException ex) {
-            Logger.getLogger(SmartCard.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+    CommandAPDU command = new CommandAPDU(CLA, INS_ATTEMPTS_LEFT, P1 ,P2);
+    try {
+   
+        ResponseAPDU response = channel.transmit(command);
+        byte[] data = response.getData();
+        byte attempts = data[0];  // Lấy giá trị số ở vị trí đầu tiên của mảng byte
+        return String.valueOf(attempts);  // Trả về giá trị dưới dạng chuỗi
+       
+    } catch (CardException ex) {
+        Logger.getLogger(SmartCard.class.getName()).log(Level.SEVERE, null, ex);
+        return null;
     }
+}
+
 
 }

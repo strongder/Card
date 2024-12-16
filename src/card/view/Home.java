@@ -20,6 +20,7 @@ public class Home extends javax.swing.JFrame {
      * Creates new form Home
      */
     public SmartCard smartCard;
+    public User user;
     public Home(SmartCard smartCard) {
         this.setLocationRelativeTo(null);
         initComponents();
@@ -80,18 +81,25 @@ public class Home extends javax.swing.JFrame {
             .addGap(0, 222, Short.MAX_VALUE)
         );
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Họ và Tên");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Ngày Sinh");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Điện Thoại");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Biển Số");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("SỐ DƯ");
 
-        jLabel7.setText("ĐỒNG");
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel7.setText("VNĐ");
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("ID");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -105,9 +113,9 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lb_Id3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(38, 38, 38)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -269,14 +277,14 @@ public class Home extends javax.swing.JFrame {
    
     private void btn_capnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_capnhatActionPerformed
         this.setVisible(false);
-        UpdateUser panel = new UpdateUser();
+        UpdateUser panel = new UpdateUser(smartCard, user);
         panel.setVisible(true);
         
     }//GEN-LAST:event_btn_capnhatActionPerformed
 
     private void btn_naptienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_naptienActionPerformed
         this.setVisible(false);
-        AddMoney panel = new AddMoney();
+        AddMoney panel = new AddMoney(smartCard, user);
         panel.setVisible(true);
     }//GEN-LAST:event_btn_naptienActionPerformed
 
@@ -300,11 +308,20 @@ public class Home extends javax.swing.JFrame {
     public void disPlay()
     {
         try {
-            User user = smartCard.readAllData();
+            user = smartCard.readAllData();
+            String moneyString = smartCard.readMoney();
+            Double money = moneyString.isEmpty() ?  0.0 : Double.valueOf(moneyString);
+            user.setMoney(money);
             setData(user);
         } catch (Exception ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void displayMoney()
+    {
+        String moneyString = smartCard.readMoney();
+        Double money = moneyString != null ? Double.parseDouble(moneyString) : 0.0;
     }
     public void setData(User user)
     {
@@ -313,7 +330,8 @@ public class Home extends javax.swing.JFrame {
         lb_phone.setText(user.getPhoneNumber());
         lb_dob.setText(user.getDateOfBirth());
         lb_carNumber.setText(user.getBienSo());
-      }
+        lb_Id3.setText(user.getMoney()+"");
+    }
   
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

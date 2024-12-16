@@ -25,7 +25,7 @@ public class PINPanel extends javax.swing.JFrame {
     public PINPanel(SmartCard smartCard) {
         initComponents();
         this.smartCard = smartCard;
-        
+        getAttemptsLeft();
         this.setLocationRelativeTo(null);
     }
 
@@ -56,6 +56,7 @@ public class PINPanel extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("NHẬP MÃ PIN");
 
         btn_khoitao.setText("Khởi Tạo Thẻ");
@@ -70,33 +71,35 @@ public class PINPanel extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_khoitao, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txt_mapin))
+                        .addGap(53, 53, 53)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(25, 25, 25)
+                                .addComponent(btn_khoitao))
+                            .addComponent(txt_mapin, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(jLabel2)))
                 .addContainerGap(57, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(129, 129, 129))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txt_mapin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_mapin, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btn_khoitao))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_khoitao, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -113,7 +116,7 @@ public class PINPanel extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93))
+                .addContainerGap())
         );
 
         pack();
@@ -124,6 +127,11 @@ public class PINPanel extends javax.swing.JFrame {
             if (new String(txt_mapin.getPassword()).isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Vui Lòng Nhập Mã Pin");
             } else {
+                System.out.println("check"+ attemptsLeft);
+                 if(attemptsLeft < 0){
+                    JOptionPane.showMessageDialog(this, "Thẻ chưa có thông tin", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 int verify = smartCard.verifyPin(new String(txt_mapin.getPassword()));
                 if (verify == 0x9000) {
                     JOptionPane.showMessageDialog(this, "Đăng Nhập Thành Công");
@@ -131,8 +139,25 @@ public class PINPanel extends javax.swing.JFrame {
                     home.setVisible(true);
                     this.setVisible(false);
 
-                } else {
-                    JOptionPane.showMessageDialog(this, "Mã pin sai bạn còn lại "+ attemptsLeft +" lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
+                } 
+                if(verify == 0x6984 ){
+                     JOptionPane.showMessageDialog(this, "Sai mã pin bạn còn lại " + (attemptsLeft -1)+ " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
+                     attemptsLeft -=1;   
+                     return;
+                }
+                if(verify ==0x6700 ){
+                     JOptionPane.showMessageDialog(this, "Mật khẩu từ 6 đến 10 ký tự. Còn " + (attemptsLeft -1)+ " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
+                     attemptsLeft -=1;   
+                     return;
+                }
+                if(verify ==0x6700 ){
+                     JOptionPane.showMessageDialog(this, "Mật khẩu từ 6 đến 10 ký tự. Còn " + (attemptsLeft -1)+ " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
+                     attemptsLeft -=1;   
+                     return;
+                }
+                if(verify == 0x6985){
+                    JOptionPane.showMessageDialog(this, "Thẻ của bạn đã bị khóa ", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
             }
         } catch (Exception ex) {
@@ -147,7 +172,9 @@ public class PINPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_khoitaoActionPerformed
     public void getAttemptsLeft()
     {
-        this.attemptsLeft = Integer.parseInt(smartCard.attemptsLeft());
+        String tem = (smartCard.attemptsLeft());
+        this.attemptsLeft = tem.isEmpty() ? -1 : Integer.parseInt(tem);
+        //System.out.println(attemptsLeft);
     }
     /**
      * @param args the command line arguments

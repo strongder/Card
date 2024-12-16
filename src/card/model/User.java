@@ -89,7 +89,7 @@ public class User {
         return money;
     }
 
-    public void setMoney(long money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 

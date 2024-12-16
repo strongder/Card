@@ -129,7 +129,6 @@ public class AppletConnect extends javax.swing.JFrame {
 
         }).start();
         smartCard = new SmartCard();
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

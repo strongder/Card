@@ -64,7 +64,7 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="btn_nap" min="-2" pref="102" max="-2" attributes="0"/>
-                          <EmptySpace pref="77" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="btn_thoat" min="-2" pref="103" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
@@ -118,7 +118,7 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="0"/>
+              <Font name="Tahoma" size="12" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="N&#x1ea1;p th&#xea;m"/>
           </Properties>
@@ -129,6 +129,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="N&#x1ea1;p"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_napActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_thoat">
           <Properties>
@@ -141,7 +144,7 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="0"/>
+              <Font name="Tahoma" size="12" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="S&#x1ed1; ti&#x1ec1;n hi&#x1ec7;n t&#x1ea1;i"/>
           </Properties>
@@ -156,7 +159,7 @@
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="0"/>
+              <Font name="Tahoma" size="12" style="3"/>
             </Property>
             <Property name="text" type="java.lang.String" value="VN&#x110;"/>
           </Properties>
