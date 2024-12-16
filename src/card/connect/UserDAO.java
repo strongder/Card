@@ -110,7 +110,7 @@ public class UserDAO {
                 String dob = rs.getString("dob");
                 String phone = rs.getString("phone");
                 String car_number = rs.getString("car_number");
-                double money = Double.parseDouble(rs.getString("money"));
+                long money = Long.parseLong(rs.getString("money"));
                 
                 user = new User(id,ten,dob,phone,car_number,money);
             }

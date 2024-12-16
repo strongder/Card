@@ -18,9 +18,9 @@ public class AddMoney extends javax.swing.JFrame {
     /**
      * Creates new form AddMoney
      */
-    
     public SmartCard smartCard;
     public User user;
+
     public AddMoney(SmartCard smartCard, User user) {
         initComponents();
         this.smartCard = smartCard;
@@ -154,33 +154,35 @@ public class AddMoney extends javax.swing.JFrame {
         this.setVisible(false);
         Home home = new Home(smartCard);
         home.setVisible(true);
-        
+
     }//GEN-LAST:event_btn_thoatActionPerformed
 
     private void btn_napActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_napActionPerformed
         // TODO add your handling code here:
-        if(txt_tien == null)
-        {
+        if (txt_tien == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền nạp thêm", "WARNING", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Double currentMoney = Double.valueOf(lb_currentMoney.getText());
-        Double addMoney = Double.valueOf(txt_tien.getText());
-        Double newMoney = currentMoney + addMoney;
+        Long currentMoney = Long.valueOf(lb_currentMoney.getText());
+        Long addMoney = Long.valueOf(txt_tien.getText());
+        String newMoney = currentMoney + addMoney+ "";
         
+
         int check = smartCard.topUpcard(newMoney);
-        if(check == 0x9000)
+        if (check == 0x9000) {
             JOptionPane.showMessageDialog(this, "Nạp tiền thành công!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-        else JOptionPane.showMessageDialog(this, "Nạp tiền thất bại", "ERROR", JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
+            Home home = new Home(smartCard);
+            home.setVisible(true);
+        } else
+            JOptionPane.showMessageDialog(this, "Nạp tiền thất bại", "ERROR", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btn_napActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
-    public void displayMoney()
-    {
-        this.lb_currentMoney.setText(user.getMoney()+"");
+    public void displayMoney() {
+        this.lb_currentMoney.setText(user.getMoney() + "");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -153,9 +153,10 @@ public class ChangePin extends javax.swing.JFrame {
             return;
         }
         int check = smartCard.changePin(mapin);
-        if (check == 0x9000)
+        if (check == 0x9000) {
             JOptionPane.showMessageDialog(this, "Đổi Mã Pin Thành Công");
-        else
+            this.setVisible(false);
+        } else
             JOptionPane.showMessageDialog(this, "Đổi mã pin thất bại", "ERROR", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btn_capnhatActionPerformed
 
@@ -169,19 +170,17 @@ public class ChangePin extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     private boolean checkMaPin(String oldPin, String mapin, String nhaplai) {
-        if(oldPin.equals(mapin))
-        {
-           JOptionPane.showMessageDialog(this, "Mã pin mới không được trùng mã pin cũ", "WARRING", JOptionPane.WARNING_MESSAGE);
-           return false;
+        if (oldPin.equals(mapin)) {
+            JOptionPane.showMessageDialog(this, "Mã pin mới không được trùng mã pin cũ", "WARRING", JOptionPane.WARNING_MESSAGE);
+            return false;
         }
-        if(!nhaplai.equals(mapin))
-        {
-           JOptionPane.showMessageDialog(this, "Mã pin nhập lại không khớp", "WARRING", JOptionPane.WARNING_MESSAGE);
-           return false;
+        if (!nhaplai.equals(mapin)) {
+            JOptionPane.showMessageDialog(this, "Mã pin nhập lại không khớp", "WARRING", JOptionPane.WARNING_MESSAGE);
+            return false;
         }
         if (mapin == null || nhaplai == null || oldPin == null) {
-           JOptionPane.showMessageDialog(this, "Điền đầy đủ thông tin", "WARRING", JOptionPane.WARNING_MESSAGE);
-           return false;
+            JOptionPane.showMessageDialog(this, "Điền đầy đủ thông tin", "WARRING", JOptionPane.WARNING_MESSAGE);
+            return false;
         }
         String regex = "^\\d{6,10}$";
         if (!mapin.matches(regex)) {

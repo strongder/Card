@@ -265,6 +265,13 @@
         <Component class="javax.swing.JPasswordField" name="txt_nhaplai">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder/>
+              </Border>
+            </Property>
+          </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="jDate">
         </Component>

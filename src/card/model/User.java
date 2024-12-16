@@ -20,9 +20,13 @@ public class User {
     private String dateOfBirth;
     private String phoneNumber;
     private String bienSo;
-    private double money;
+    private Long money;
     private byte[]avatar;
      private String publicKey;
+
+    public User(String id, String ten, String dob, String phone, String car_number, Long money) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     public String getPublicKey() {
         return publicKey;
     }
@@ -50,15 +54,6 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.bienSo = bienSo;
         this.publicKey = publicKey;
-    }
-
-    public User(String id, String fullName, String dateOfBirth, String phoneNumber, String bienSo, double money) {
-        this.id = id;
-        this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
-        this.phoneNumber = phoneNumber;
-        this.bienSo = bienSo;
-        this.money = money;
     }
 
     public User(){};
@@ -123,11 +118,11 @@ public class User {
         this.bienSo = bienSo;
     }
 
-    public double getMoney() {
+    public long getMoney() {
         return money;
     }
 
-    public void setMoney(Double money) {
+    public void setMoney(Long money) {
         this.money = money;
     }
 

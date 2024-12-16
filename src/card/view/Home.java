@@ -51,7 +51,7 @@ public class Home extends javax.swing.JFrame {
         lb_Id = new javax.swing.JLabel();
         lb_name = new javax.swing.JLabel();
         lb_dob = new javax.swing.JLabel();
-        lb_Id3 = new javax.swing.JLabel();
+        lb_money = new javax.swing.JLabel();
         lb_carNumber = new javax.swing.JLabel();
         lb_phone = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -89,6 +89,8 @@ public class Home extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("ID");
 
+        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -101,7 +103,7 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lb_Id3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lb_money, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -153,7 +155,7 @@ public class Home extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lb_Id3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lb_money, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -270,17 +272,18 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_capnhatActionPerformed
 
     private void btn_naptienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_naptienActionPerformed
-        this.setVisible(false);
+//        .this.setVisible(false);
         AddMoney panel = new AddMoney(smartCard, user);
         panel.setVisible(true);
     }//GEN-LAST:event_btn_naptienActionPerformed
 
     private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+        
         smartCard.disconnectCard();
         AppletConnect panel = new AppletConnect();
         panel.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btn_thoatActionPerformed
 
     private void btn_doimapinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_doimapinActionPerformed
@@ -297,7 +300,8 @@ public class Home extends javax.swing.JFrame {
         try {
             user = smartCard.readAllData();
             String moneyString = smartCard.readMoney();
-            Double money = moneyString.isEmpty() ?  0.0 : Double.valueOf(moneyString);
+            Long money = moneyString.isEmpty() ?  0 : Long.valueOf(moneyString);
+            System.out.println("money"+money);
             user.setMoney(money);
             setData(user);
         } catch (Exception ex) {
@@ -305,11 +309,7 @@ public class Home extends javax.swing.JFrame {
         }
     }
     
-    public void displayMoney()
-    {
-        String moneyString = smartCard.readMoney();
-        Double money = moneyString != null ? Double.parseDouble(moneyString) : 0.0;
-    }
+   
     public void setData(User user)
     {
         lb_Id.setText(user.getId());
@@ -317,7 +317,7 @@ public class Home extends javax.swing.JFrame {
         lb_phone.setText(user.getPhoneNumber());
         lb_dob.setText(user.getDateOfBirth());
         lb_carNumber.setText(user.getBienSo());
-        lb_Id3.setText(user.getMoney()+"");
+        lb_money.setText(user.getMoney()+"");
     }
   
     
@@ -339,9 +339,9 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lb_Id;
-    private javax.swing.JLabel lb_Id3;
     private javax.swing.JLabel lb_carNumber;
     private javax.swing.JLabel lb_dob;
+    private javax.swing.JLabel lb_money;
     private javax.swing.JLabel lb_name;
     private javax.swing.JLabel lb_phone;
     // End of variables declaration//GEN-END:variables

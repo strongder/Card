@@ -102,7 +102,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel6" min="-2" pref="75" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lb_Id3" min="-2" pref="68" max="-2" attributes="0"/>
+                              <Component id="lb_money" min="-2" pref="68" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                               <Component id="jLabel7" min="-2" pref="41" max="-2" attributes="0"/>
                           </Group>
@@ -169,7 +169,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel7" min="-2" pref="26" max="-2" attributes="0"/>
                                   <Component id="jLabel6" alignment="0" min="-2" pref="27" max="-2" attributes="0"/>
-                                  <Component id="lb_Id3" min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Component id="lb_money" min="-2" pref="23" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -245,13 +245,20 @@
             </Component>
             <Component class="javax.swing.JLabel" name="lb_dob">
             </Component>
-            <Component class="javax.swing.JLabel" name="lb_Id3">
+            <Component class="javax.swing.JLabel" name="lb_money">
             </Component>
             <Component class="javax.swing.JLabel" name="lb_carNumber">
             </Component>
             <Component class="javax.swing.JLabel" name="lb_phone">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                    <LineBorder/>
+                  </Border>
+                </Property>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
