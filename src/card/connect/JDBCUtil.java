@@ -12,11 +12,12 @@ public class JDBCUtil {
         Connection conn = null;
         String url = "jdbc:mysql://localhost:3306/parking_card";
         String username = "root";
-        String password = "1234567890";
+        String password = "123456789";
 
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, username, password);
-
+            System.out.println("ket noi thanh cong");
         } catch (SQLException e) {
 
             e.printStackTrace();
@@ -35,7 +36,7 @@ public class JDBCUtil {
 
     public static void main(String[] args) throws ClassNotFoundException {
 
-        JDBCUtil.closeConnection(getConnection());;
+        JDBCUtil.closeConnection(getConnection());
 
 //		if(con!=null)
 //		{

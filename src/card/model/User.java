@@ -21,6 +21,42 @@ public class User {
     private String phoneNumber;
     private String bienSo;
     private double money;
+    private String publicKey;
+
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
+    }
+    private int status;
+    private int isDelete;
+
+    public User(String id, String fullName, String dateOfBirth, String phoneNumber, String bienSo, String publicKey) {
+        this.id = id;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.bienSo = bienSo;
+        this.publicKey = publicKey;
+    }
     private byte[]avatar;
 
     public User(){};
