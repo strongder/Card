@@ -8,6 +8,9 @@ package card.view;
 import card.connect.SmartCard;
 import card.model.User;
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -27,12 +30,14 @@ public class UpdateUser extends javax.swing.JFrame {
     private SmartCard smartCard;
     boolean connected;
     private User user;
+
     public UpdateUser(SmartCard smartCard, User user) {
         initComponents();
         this.smartCard = smartCard;
         this.user = user;
         display();
         this.setLocationRelativeTo(null);
+        jDate.setDateFormatString("dd/MM/yyyy");
     }
 
     /**
@@ -59,7 +64,7 @@ public class UpdateUser extends javax.swing.JFrame {
         btn_thoat = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         txt_id = new javax.swing.JLabel();
-        txt_dob = new javax.swing.JTextField();
+        jDate = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -136,12 +141,6 @@ public class UpdateUser extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("ID");
 
-        txt_dob.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_dobActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -178,9 +177,9 @@ public class UpdateUser extends javax.swing.JFrame {
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_phone, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_dob, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txt_phone, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(jDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -199,20 +198,24 @@ public class UpdateUser extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_ten, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_ten, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(16, 16, 16)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_dob, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_phone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_bienso, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 4, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_bienso, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btn_capnhat, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn_thoat, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -247,7 +250,7 @@ public class UpdateUser extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -307,17 +310,14 @@ public class UpdateUser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_phoneActionPerformed
 
-    private void txt_dobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_dobActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_dobActionPerformed
-
     private void txt_biensoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_biensoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_biensoActionPerformed
 
     private void btn_capnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_capnhatActionPerformed
+         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String ten = txt_ten.getText();
-        String ngaysinh = txt_dob.getText();
+        String ngaysinh = dateFormat.format(jDate.getDate());
         String sdt = txt_phone.getText();
         String bienso = txt_bienso.getText();
 
@@ -331,11 +331,6 @@ public class UpdateUser extends javax.swing.JFrame {
             return;
         }
 
-        if (!checkNgaySinh(ngaysinh)) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập ngày sinh đúng định dạng dd/mm/yyyy");
-            return;
-        }
-
         if (!checkSoDienThoai(sdt)) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập chính xác số điện thoại");
             return;
@@ -345,7 +340,7 @@ public class UpdateUser extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng biển số xe");
             return;
         }
-        
+
         User user = new User();
         user.setId(user.generateId());
         user.setFullName(ten);
@@ -376,17 +371,14 @@ public class UpdateUser extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
-    public void display()
-    {
+    public void display() {
         txt_id.setText(user.getId());
         txt_ten.setText(user.getFullName());
-        txt_dob.setText(user.getPhoneNumber());
+        jDate.setDateFormatString(user.getDateOfBirth());
         txt_phone.setText(user.getDateOfBirth());
         txt_bienso.setText(user.getBienSo());
     }
-    
-    
+
     private boolean checkNull(String ten, String ngaysinh, String sdt, String bienso) {
         if (ten == null && ngaysinh == null && sdt == null && bienso == null) {
             return true;
@@ -404,10 +396,17 @@ public class UpdateUser extends javax.swing.JFrame {
     }
 
     public void setData(User user) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = dateFormat.parse(user.getDateOfBirth());
+        } catch (ParseException ex) {
+            Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
         txt_id.setText(user.getId());
         txt_ten.setText(user.getFullName());
-        txt_dob.setText(user.getPhoneNumber());
-        txt_phone.setText(user.getDateOfBirth());
+        txt_phone.setText(user.getPhoneNumber());
+        jDate.setDate(date);
         txt_bienso.setText(user.getBienSo());
     }
 
@@ -429,12 +428,12 @@ public class UpdateUser extends javax.swing.JFrame {
         return bienso != null && bienso.matches(regex);
     }
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_capnhat;
     private javax.swing.JButton btn_chonanh;
     private javax.swing.JButton btn_thoat;
+    private com.toedter.calendar.JDateChooser jDate;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -445,7 +444,6 @@ public class UpdateUser extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField txt_bienso;
-    private javax.swing.JTextField txt_dob;
     private javax.swing.JLabel txt_id;
     private javax.swing.JTextField txt_phone;
     private javax.swing.JTextField txt_ten;
