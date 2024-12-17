@@ -279,11 +279,11 @@ public class Home extends javax.swing.JFrame {
 
     private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
         // TODO add your handling code here:
-        
         smartCard.disconnectCard();
+        this.setVisible(false);
         AppletConnect panel = new AppletConnect();
         panel.setVisible(true);
-        this.setVisible(false);
+        
     }//GEN-LAST:event_btn_thoatActionPerformed
 
     private void btn_doimapinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_doimapinActionPerformed
