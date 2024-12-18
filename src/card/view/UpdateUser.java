@@ -5,9 +5,14 @@
  */
 package card.view;
 
+import card.common.ByteUtil;
 import card.connect.SmartCard;
 import card.model.User;
+import card.model.Cache;
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +22,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -29,13 +36,13 @@ public class UpdateUser extends javax.swing.JFrame {
      */
     private SmartCard smartCard;
     boolean connected;
-    private User user;
+    public byte[] imageBytes;
 
-    public UpdateUser(SmartCard smartCard, User user) {
+    public UpdateUser(SmartCard smartCard) {
         initComponents();
         this.smartCard = smartCard;
-        this.user = user;
         display();
+        btn_updateImage.setVisible(false);
         this.setLocationRelativeTo(null);
         jDate.setDateFormatString("dd/MM/yyyy");
     }
@@ -50,7 +57,6 @@ public class UpdateUser extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         btn_chonanh = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -65,24 +71,13 @@ public class UpdateUser extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txt_id = new javax.swing.JLabel();
         jDate = new com.toedter.calendar.JDateChooser();
+        lb_image = new javax.swing.JLabel();
+        btn_updateImage = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 159, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 192, Short.MAX_VALUE)
-        );
 
         btn_chonanh.setText("Chọn Ảnh");
         btn_chonanh.addActionListener(new java.awt.event.ActionListener() {
@@ -141,19 +136,28 @@ public class UpdateUser extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("ID");
 
+        lb_image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        btn_updateImage.setText("Lưu");
+        btn_updateImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateImageActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lb_image, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(70, 70, 70)
-                        .addComponent(btn_chonanh)))
-                .addGap(55, 55, 55)
+                        .addComponent(btn_chonanh, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_updateImage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(46, 46, 46)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -180,7 +184,7 @@ public class UpdateUser extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txt_phone, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                             .addComponent(jDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,12 +192,13 @@ public class UpdateUser extends javax.swing.JFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
+                                .addGap(15, 15, 15)
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txt_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,10 +223,12 @@ public class UpdateUser extends javax.swing.JFrame {
                             .addComponent(btn_thoat, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(23, 23, 23))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_chonanh, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addComponent(lb_image, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_chonanh, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_updateImage, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -253,48 +260,31 @@ public class UpdateUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_chonanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonanhActionPerformed
+        // Tạo một JFileChooser để người dùng chọn ảnh
         JFileChooser fileChooser = new JFileChooser();
 
-        // Chỉ cho phép chọn file
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        // Chỉ cho phép chọn các file có định dạng hình ảnh
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg", "gif");
+        fileChooser.setFileFilter(filter);
 
-        // Bộ lọc để chỉ chọn các file ảnh
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true; // Cho phép chọn thư mục
-                }
-                String fileName = f.getName().toLowerCase();
-                return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".bmp") || fileName.endsWith(".gif");
-            }
-
-            @Override
-            public String getDescription() {
-                return "Image Files (*.jpg, *.jpeg, *.png, *.bmp, *.gif)";
-            }
-        });
-
-        // Hiển thị hộp thoại mở file
-        int returnValue = fileChooser.showOpenDialog(this);
-
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            // Lấy file đã chọn
-            File selectedFile = fileChooser.getSelectedFile();
-
-            // Hiển thị đường dẫn file hoặc xử lý ảnh
-            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-
-            // Ví dụ: Hiển thị ảnh trong JLabel
+        // Hiển thị hộp thoại chọn file và kiểm tra xem người dùng đã chọn file hay chưa
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
             try {
+                File selectedFile = fileChooser.getSelectedFile();
+                imageBytes = ByteUtil.convertFileToBytes(selectedFile);
+                // Đọc file ảnh và tạo một ImageIcon
                 ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
-                // Giả sử bạn có một JLabel tên là lblImage
-                //lblImage.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH)));
-            } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Không thể hiển thị ảnh!", "Error", JOptionPane.ERROR_MESSAGE);
+
+                // Điều chỉnh kích thước ảnh cho vừa với JLabel
+                Image image = imageIcon.getImage(); // Lấy ảnh gốc
+                Image scaledImage = image.getScaledInstance(lb_image.getWidth(), lb_image.getHeight(), Image.SCALE_SMOOTH);
+                // Hiển thị ảnh lên JLabel
+                lb_image.setIcon(new ImageIcon(scaledImage));
+                btn_updateImage.setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(CreateCard.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            System.out.println("No file selected.");
         }
     }//GEN-LAST:event_btn_chonanhActionPerformed
 
@@ -312,6 +302,7 @@ public class UpdateUser extends javax.swing.JFrame {
 
     private void btn_capnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_capnhatActionPerformed
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String id = txt_id.getText();
         String ten = txt_ten.getText();
         String ngaysinh = dateFormat.format(jDate.getDate());
         String sdt = txt_phone.getText();
@@ -338,24 +329,29 @@ public class UpdateUser extends javax.swing.JFrame {
         }
 
         User user = new User();
-        user.setId(user.generateId());
+        user.setId(id);
         user.setFullName(ten);
         user.setDateOfBirth(ngaysinh);
         user.setPhoneNumber(sdt);
         user.setBienSo(bienso);
 
-        try {
-            if (smartCard.sendAllData(user)) {
-                JOptionPane.showMessageDialog(this, "Thay đổi thông tin thành công", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-                Home home = new Home(smartCard);
-                this.setVisible(false);
-                home.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Đổi thông tin thất bại", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(CreateCard.class.getName()).log(Level.SEVERE, null, ex);
+        if (smartCard.sendAllData(user)) {
+            JOptionPane.showMessageDialog(this, "Thay đổi thông tin thành công", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+            Cache.userCache.setId(id);
+            Cache.userCache.setId(id);
+            Cache.userCache.setFullName(ten);
+            Cache.userCache.setPhoneNumber(sdt);
+            Cache.userCache.setDateOfBirth(ngaysinh);
+            Cache.userCache.setBienSo(bienso);
+
+            Home home = new Home(smartCard);
+            this.setVisible(false);
+            home.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Đổi thông tin thất bại", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
     }//GEN-LAST:event_btn_capnhatActionPerformed
 
     private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
@@ -364,53 +360,23 @@ public class UpdateUser extends javax.swing.JFrame {
         home.setVisible(true);
     }//GEN-LAST:event_btn_thoatActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public void display() {
-        Date ngaysinh = null;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            ngaysinh = dateFormat.parse(user.getDateOfBirth());
-        } catch (ParseException e) {
-            e.printStackTrace();
+    private void btn_updateImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateImageActionPerformed
+        // TODO add your handling code here:
+        int check = smartCard.saveImage(imageBytes);
+        if (check == 0x9000) {
+            JOptionPane.showMessageDialog(this, "Thay đổi ảnh đại diện thành công", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+            Cache.userCache.setAvatar(imageBytes);
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật ảnh thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        txt_id.setText(user.getId());
-        txt_ten.setText(user.getFullName());
-        jDate.setDate(ngaysinh);
-        txt_phone.setText(user.getPhoneNumber());
-        txt_bienso.setText(user.getBienSo());
-    }
+    }//GEN-LAST:event_btn_updateImageActionPerformed
 
     private boolean checkNull(String ten, String ngaysinh, String sdt, String bienso) {
         if (ten == null && ngaysinh == null && sdt == null && bienso == null) {
             return true;
         }
         return false;
-    }
-
-    public void disPlay() {
-        try {
-            User user = smartCard.readAllData();
-            setData(user);
-        } catch (Exception ex) {
-            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void setData(User user) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = null;
-        try {
-            date = dateFormat.parse(user.getDateOfBirth());
-        } catch (ParseException ex) {
-            Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        txt_id.setText(user.getId());
-        txt_ten.setText(user.getFullName());
-        txt_phone.setText(user.getPhoneNumber());
-        jDate.setDate(date);
-        txt_bienso.setText(user.getBienSo());
     }
 
     private boolean checkNgaySinh(String ngaysinh) {
@@ -431,11 +397,44 @@ public class UpdateUser extends javax.swing.JFrame {
         return bienso != null && bienso.matches(regex);
     }
 
+    public void display() {
+        User user = Cache.userCache;
+        Date ngaysinh = null;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            ngaysinh = dateFormat.parse(user.getDateOfBirth());
+        } catch (ParseException e) {
+        }
+
+        txt_id.setText(user.getId());
+        txt_ten.setText(user.getFullName());
+        jDate.setDate(ngaysinh);
+        txt_phone.setText(user.getPhoneNumber());
+        txt_bienso.setText(user.getBienSo());
+        displayImage(user.getAvatar());
+
+    }
+
+    public void displayImage(byte[] imageBytes) {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
+            Image image = ImageIO.read(inputStream);
+            int labelWidth = lb_image.getWidth();
+            int labelHeight = lb_image.getHeight();
+            Image scaledImage = image.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
+            ImageIcon imageIcon = new ImageIcon(scaledImage);
+            lb_image.setIcon(imageIcon);
+        } catch (IOException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_capnhat;
     private javax.swing.JButton btn_chonanh;
     private javax.swing.JButton btn_thoat;
+    private javax.swing.JButton btn_updateImage;
     private com.toedter.calendar.JDateChooser jDate;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -445,7 +444,7 @@ public class UpdateUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lb_image;
     private javax.swing.JTextField txt_bienso;
     private javax.swing.JLabel txt_id;
     private javax.swing.JTextField txt_phone;

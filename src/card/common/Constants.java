@@ -27,8 +27,8 @@ public class Constants {
     public static final byte INS_CHANGE_INFO = 0x01;
 
 
-    public static final byte INS_CHANGE_IMAGE = 0x03;
-    public static final byte INS_DISPLAY_IMAGE = 0x04;
+    public static final byte INS_CHANGE_IMAGE = 0x21;
+    public static final byte INS_DISPLAY_IMAGE = 0x22;
     
     public static final byte INS_CHANGE_MONEY = 0x10;
     public static final byte INS_DISPLAY_MONEY = 0x11;

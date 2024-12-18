@@ -7,6 +7,7 @@ package card.view;
 
 import card.connect.SmartCard;
 import card.model.User;
+import card.model.Cache;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,12 +20,10 @@ public class AddMoney extends javax.swing.JFrame {
      * Creates new form AddMoney
      */
     public SmartCard smartCard;
-    public User user;
 
-    public AddMoney(SmartCard smartCard, User user) {
+    public AddMoney(SmartCard smartCard) {
         initComponents();
         this.smartCard = smartCard;
-        this.user = user;
         displayMoney();
         this.setLocationRelativeTo(null);
     }
@@ -165,12 +164,12 @@ public class AddMoney extends javax.swing.JFrame {
         }
         Long currentMoney = Long.valueOf(lb_currentMoney.getText());
         Long addMoney = Long.valueOf(txt_tien.getText());
-        String newMoney = currentMoney + addMoney+ "";
-        
+        Long newMoney = currentMoney + addMoney;
 
-        int check = smartCard.topUpcard(newMoney);
+        int check = smartCard.topUpcard(newMoney + "");
         if (check == 0x9000) {
             JOptionPane.showMessageDialog(this, "Nạp tiền thành công!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+            Cache.userCache.setMoney(newMoney);
             this.setVisible(false);
             Home home = new Home(smartCard);
             home.setVisible(true);
@@ -182,7 +181,7 @@ public class AddMoney extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public void displayMoney() {
-        this.lb_currentMoney.setText(user.getMoney() + "");
+        this.lb_currentMoney.setText(Cache.userCache.getMoney() + "");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -22,7 +22,7 @@ public class User {
     private String bienSo;
     private Long money;
     private byte[]avatar;
-     private String publicKey;
+    private String publicKey;
 
     public User(String id, String ten, String dob, String phone, String car_number, Long money) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -128,11 +128,11 @@ public class User {
 
     public byte[] getAvatar() {
         return avatar;
-    }
+    }  
 
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
-    }
+    } 
     
     public String generateId()
     {

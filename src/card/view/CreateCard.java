@@ -5,12 +5,14 @@
  */
 package card.view;
 
+import card.common.ByteUtil;
 import card.connect.SmartCard;
 import card.model.User;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +25,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -35,6 +38,7 @@ public class CreateCard extends javax.swing.JFrame {
      */
     SmartCard smartCard;
     Image image;
+    public byte[] imageBytes;
 
     public CreateCard(SmartCard smartCard) {
         initComponents();
@@ -68,7 +72,7 @@ public class CreateCard extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txt_mapin = new javax.swing.JPasswordField();
         txt_nhaplai = new javax.swing.JPasswordField();
-        jLabel9 = new javax.swing.JLabel();
+        lb_image = new javax.swing.JLabel();
         jDate = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
 
@@ -136,7 +140,7 @@ public class CreateCard extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("NHẬP LẠI");
 
-        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lb_image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -145,14 +149,14 @@ public class CreateCard extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(86, 86, 86)
                 .addComponent(btn_chonanh)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_khoitao, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61)
                 .addComponent(btn_thoat, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lb_image, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2)
@@ -180,13 +184,13 @@ public class CreateCard extends javax.swing.JFrame {
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txt_ten, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(67, 67, 67)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lb_image, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_chonanh, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(60, Short.MAX_VALUE))
@@ -239,15 +243,15 @@ public class CreateCard extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -255,6 +259,31 @@ public class CreateCard extends javax.swing.JFrame {
 
     private void btn_chonanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonanhActionPerformed
         // Tạo một JFileChooser để người dùng chọn ảnh
+        JFileChooser fileChooser = new JFileChooser();
+
+        // Chỉ cho phép chọn các file có định dạng hình ảnh
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg", "gif");
+        fileChooser.setFileFilter(filter);
+
+        // Hiển thị hộp thoại chọn file và kiểm tra xem người dùng đã chọn file hay chưa
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                File selectedFile = fileChooser.getSelectedFile();
+                imageBytes = ByteUtil.convertFileToBytes(selectedFile);
+                // Đọc file ảnh và tạo một ImageIcon
+                ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
+
+                // Điều chỉnh kích thước ảnh cho vừa với JLabel
+                Image image = imageIcon.getImage(); // Lấy ảnh gốc
+                Image scaledImage = image.getScaledInstance(lb_image.getWidth(), lb_image.getHeight(), Image.SCALE_SMOOTH);
+
+                // Hiển thị ảnh lên JLabel
+                lb_image.setIcon(new ImageIcon(scaledImage));
+            } catch (IOException ex) {
+                Logger.getLogger(CreateCard.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
     }//GEN-LAST:event_btn_chonanhActionPerformed
 
@@ -278,7 +307,6 @@ public class CreateCard extends javax.swing.JFrame {
         String bienso = txt_bienso.getText();
         String mapin = new String(txt_mapin.getPassword());
         String nhaplai = new String(txt_nhaplai.getPassword());
-
         if (checkNull(ten, ngaysinh, sdt, bienso)) {
             JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin");
             return;
@@ -312,25 +340,24 @@ public class CreateCard extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
         User user = new User();
         user.setId(user.generateId());
         user.setFullName(ten);
         user.setDateOfBirth(ngaysinh);
         user.setPhoneNumber(sdt);
         user.setBienSo(bienso);
+        user.setAvatar(imageBytes);
 
-        try {
-            if (smartCard.sendAllData(user)) {
-                JOptionPane.showMessageDialog(this, "Tạo thẻ thành công");
-                PINPanel pin = new PINPanel(smartCard);
-                this.setVisible(false);
-                pin.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(CreateCard.class.getName()).log(Level.SEVERE, null, ex);
+        if (smartCard.sendAllData(user) && saveImageToCard()) {
+            JOptionPane.showMessageDialog(this, "Tạo thẻ thành công");
+            PINPanel pin = new PINPanel(smartCard);
+            this.setVisible(false);
+            pin.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_btn_khoitaoActionPerformed
 
     private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
@@ -384,6 +411,11 @@ public class CreateCard extends javax.swing.JFrame {
         return mapin.equals(nhaplai);
     }
 
+    public boolean saveImageToCard() {
+        int check = smartCard.saveImage(imageBytes);
+        return check == 0x9000;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_chonanh;
@@ -398,8 +430,8 @@ public class CreateCard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lb_image;
     private javax.swing.JTextField txt_bienso;
     private javax.swing.JPasswordField txt_mapin;
     private javax.swing.JPasswordField txt_nhaplai;

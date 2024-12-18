@@ -6,6 +6,8 @@
 package card.view;
 
 import card.connect.SmartCard;
+import card.model.User;
+import card.model.Cache;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -127,35 +129,36 @@ public class PINPanel extends javax.swing.JFrame {
             if (new String(txt_mapin.getPassword()).isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Vui Lòng Nhập Mã Pin");
             } else {
-                System.out.println("check"+ attemptsLeft);
-                 if(attemptsLeft < 0){
+                System.out.println("check" + attemptsLeft);
+                if (attemptsLeft < 0) {
                     JOptionPane.showMessageDialog(this, "Thẻ chưa có thông tin", "ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 int verify = smartCard.verifyPin(new String(txt_mapin.getPassword()));
                 if (verify == 0x9000) {
                     JOptionPane.showMessageDialog(this, "Đăng Nhập Thành Công");
+                    setCacheInfo();
                     Home home = new Home(smartCard);
                     home.setVisible(true);
                     this.setVisible(false);
 
-                } 
-                if(verify == 0x6984 ){
-                     JOptionPane.showMessageDialog(this, "Sai mã pin bạn còn lại " + (attemptsLeft -1)+ " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
-                     attemptsLeft -=1;   
-                     return;
                 }
-                if(verify ==0x6700 ){
-                     JOptionPane.showMessageDialog(this, "Mật khẩu từ 6 đến 10 ký tự. Còn " + (attemptsLeft -1)+ " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
-                     attemptsLeft -=1;   
-                     return;
+                if (verify == 0x6984) {
+                    JOptionPane.showMessageDialog(this, "Sai mã pin bạn còn lại " + (attemptsLeft - 1) + " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    attemptsLeft -= 1;
+                    return;
                 }
-                if(verify ==0x6700 ){
-                     JOptionPane.showMessageDialog(this, "Mật khẩu từ 6 đến 10 ký tự. Còn " + (attemptsLeft -1)+ " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
-                     attemptsLeft -=1;   
-                     return;
+                if (verify == 0x6700) {
+                    JOptionPane.showMessageDialog(this, "Mật khẩu từ 6 đến 10 ký tự. Còn " + (attemptsLeft - 1) + " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    attemptsLeft -= 1;
+                    return;
                 }
-                if(verify == 0x6985){
+                if (verify == 0x6700) {
+                    JOptionPane.showMessageDialog(this, "Mật khẩu từ 6 đến 10 ký tự. Còn " + (attemptsLeft - 1) + " lần nhập", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    attemptsLeft -= 1;
+                    return;
+                }
+                if (verify == 0x6985) {
                     JOptionPane.showMessageDialog(this, "Thẻ của bạn đã bị khóa ", "ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -170,11 +173,19 @@ public class PINPanel extends javax.swing.JFrame {
         CreateCard panel = new CreateCard(smartCard);
         panel.setVisible(true);
     }//GEN-LAST:event_btn_khoitaoActionPerformed
-    public void getAttemptsLeft()
-    {
+    public void getAttemptsLeft() {
         String tem = (smartCard.attemptsLeft());
         this.attemptsLeft = tem.isEmpty() ? -1 : Integer.parseInt(tem);
         //System.out.println(attemptsLeft);
+    }
+
+    public void setCacheInfo() {
+        Cache.userCache = smartCard.readAllData();
+        String moneyString = smartCard.readMoney();
+        Long money = moneyString.isEmpty()? 0 : Long.valueOf(moneyString);
+        Cache.userCache.setMoney(money);
+        byte[] imageBytes = smartCard.readImage();
+        Cache.userCache.setAvatar(imageBytes);
     }
     /**
      * @param args the command line arguments
