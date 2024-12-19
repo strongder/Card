@@ -9,6 +9,7 @@ import card.common.Constants;
 import static card.common.Constants.AID;
 import static card.common.Constants.CLA;
 import static card.common.Constants.INS_ATTEMPTS_LEFT;
+import static card.common.Constants.INS_AUTHENTICATE;
 import static card.common.Constants.INS_CHANGE_IMAGE;
 import static card.common.Constants.INS_CHANGE_MONEY;
 import static card.common.Constants.INS_CHANGE_PIN;
@@ -16,15 +17,23 @@ import static card.common.Constants.INS_CREATE_INFO;
 import static card.common.Constants.INS_CREATE_PIN;
 import static card.common.Constants.INS_DISPLAY_INFO;
 import static card.common.Constants.INS_DISPLAY_MONEY;
+import static card.common.Constants.INS_PUBLIC_KEY;
 import static card.common.Constants.INS_VERIFY;
 import static card.common.Constants.P1;
 import static card.common.Constants.P2;
 import card.model.User;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.SecureRandom;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Cipher;
 import javax.smartcardio.*;
 
 /**
@@ -35,14 +44,14 @@ public class SmartCard {
 
     private Card card;
     private CardChannel channel;
-
+    
     public boolean connectCard() throws Exception {
         TerminalFactory factory = TerminalFactory.getDefault();
         CardTerminals terminals = factory.terminals();
         CardTerminal terminal = terminals.list().get(0);
 
         card = terminal.connect("*");
-          System.out.println("Card protocol: " + card.getProtocol()); 
+        System.out.println("Card protocol: " + card.getProtocol());
         channel = card.getBasicChannel();
 
         CommandAPDU selectApplet = new CommandAPDU(0x00, 0xA4, 0x04, 0x00, AID);
@@ -60,14 +69,14 @@ public class SmartCard {
         }
     }
 
-    public boolean sendAllData(User user)  {
+    public boolean sendAllData(User user) {
         try {
             byte[] idBytes = user.getId().getBytes();
             byte[] nameBytes = user.getFullName().getBytes();
             byte[] phoneBytes = user.getPhoneNumber().getBytes();
             byte[] dobBytes = user.getDateOfBirth().getBytes();
             byte[] carNumberBytes = user.getBienSo().getBytes();
-            
+
             // Tạo mảng byte chứa toàn bộ dữ liệu
             byte[] allData = new byte[16 + 64 + 16 + 16 + 16];
             System.arraycopy(idBytes, 0, allData, 0, idBytes.length);
@@ -75,10 +84,10 @@ public class SmartCard {
             System.arraycopy(dobBytes, 0, allData, 16 + 64, dobBytes.length);
             System.arraycopy(phoneBytes, 0, allData, 16 + 64 + 16, phoneBytes.length);
             System.arraycopy(carNumberBytes, 0, allData, 16 + 64 + 16 + 16, carNumberBytes.length);
-            
+
             CommandAPDU command = new CommandAPDU(CLA, INS_CREATE_INFO, P1, P2, allData);
             ResponseAPDU response = channel.transmit(command);
-            
+
             if (response.getSW() != 0x9000) {
                 return false;
             }
@@ -93,7 +102,7 @@ public class SmartCard {
         try {
             CommandAPDU command = new CommandAPDU(CLA, INS_DISPLAY_INFO, P1, P2);
             ResponseAPDU response = channel.transmit(command);
-            
+
             if (response.getSW() != 0x9000) {
                 try {
                     throw new Exception("Lỗi khi đọc dữ liệu, mã phản hồi: " + Integer.toHexString(response.getSW()));
@@ -102,13 +111,13 @@ public class SmartCard {
                 }
             }
             byte[] data = response.getData();
-            
+
             String id = new String(data, 0, 16).trim();
             String name = new String(data, 16, 64).trim();
             String dob = new String(data, 16 + 64, 16).trim();
             String phone = new String(data, 16 + 64 + 16, 16).trim();
             String carNumber = new String(data, 16 + 64 + 16 + 16, 16).trim();
-            
+
             User user = new User(id, name, dob, phone, carNumber);
             return user;
         } catch (CardException ex) {
@@ -215,7 +224,7 @@ public class SmartCard {
         try {
             ResponseAPDU response = channel.transmit(command);
             byte[] data = response.getData();
-            System.out.println("check"+ data);
+            System.out.println("check" + data);
             if (data != null && data.length > 0) {
                 return data; // Trả về mảng byte nếu dữ liệu hợp lệ
             } else {
@@ -227,6 +236,74 @@ public class SmartCard {
             Logger.getLogger(SmartCard.class.getName()).log(Level.SEVERE, "CardException occurred", ex);
             return null;
         }
+    }
+
+    // RSA
+    public byte[] receivePublicKey() {
+        try {
+            CommandAPDU getPublicKeyCmd = new CommandAPDU(CLA, INS_PUBLIC_KEY, P1, P2);
+            ResponseAPDU response = channel.transmit(getPublicKeyCmd);
+            byte[] publicKeyData = response.getData();
+            return publicKeyData;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public int authenticate(byte[] publicKeyData) {
+        try {
+  
+            RSAPublicKey publicKey = restorePublicKey(publicKeyData);
+            String message = generateRandomString();
+            byte[] rawMessage = message.getBytes();
+            byte[] encryptedData = rsaEncrypt(message.getBytes(), publicKey);
+            byte[] allData = new byte[rawMessage.length + encryptedData.length];
+            System.arraycopy(rawMessage, 0, allData, 0, rawMessage.length);
+            System.arraycopy(encryptedData, 0, allData, rawMessage.length, encryptedData.length);
+            // Tạo APDU với encryptedData làm dữ liệu
+            CommandAPDU getDecryptedDataCmd = new CommandAPDU(CLA, INS_AUTHENTICATE, P1, P2, allData);
+            // Gửi APDU đến thẻ
+            ResponseAPDU response = channel.transmit(getDecryptedDataCmd);
+
+            // Lấy dữ liệu từ phản hồi
+            return response.getSW();
+        } catch (Exception e) {
+            // Xử lý lỗi giao tiếp thẻ
+            throw new RuntimeException("Error communicating with the card: " + e.getMessage(), e);
+        }
+
+    }
+
+    private byte[] rsaEncrypt(byte[] data, RSAPublicKey publicKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        return cipher.doFinal(data);
+    }
+
+    private RSAPublicKey restorePublicKey(byte[] publicKeyData) {
+        try {
+            BigInteger modulus = new BigInteger(1, publicKeyData, 0, 128);
+            BigInteger exponent = new BigInteger(1, publicKeyData, 128, 3);
+            RSAPublicKeySpec spec = new RSAPublicKeySpec(modulus, exponent);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return (RSAPublicKey) keyFactory.generatePublic(spec);
+        } catch (Exception ex) {
+            Logger.getLogger(SmartCard.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public static String generateRandomString() {
+        // Các ký tự hợp lệ (chữ cái và số)
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();  // Sử dụng SecureRandom để tăng tính bảo mật
+        StringBuilder sb = new StringBuilder(16);  // Chuỗi kết quả có độ dài 16 ký tự
+
+        for (int i = 0; i < 16; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            sb.append(characters.charAt(randomIndex));  // Thêm ký tự ngẫu nhiên vào chuỗi
+        }
+        return sb.toString();
     }
 
 }

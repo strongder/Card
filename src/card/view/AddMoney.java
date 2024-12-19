@@ -162,6 +162,12 @@ public class AddMoney extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số tiền nạp thêm", "WARNING", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        int authen = smartCard.authenticate(Cache.userCache.getPublicKey());
+        if(authen != 0x9000)
+        {
+           JOptionPane.showMessageDialog(this, "Không phải thẻ phát hành", "ERROR", JOptionPane.ERROR_MESSAGE);
+           return;
+        }
         Long currentMoney = Long.valueOf(lb_currentMoney.getText());
         Long addMoney = Long.valueOf(txt_tien.getText());
         Long newMoney = currentMoney + addMoney;
@@ -170,9 +176,9 @@ public class AddMoney extends javax.swing.JFrame {
         if (check == 0x9000) {
             JOptionPane.showMessageDialog(this, "Nạp tiền thành công!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
             Cache.userCache.setMoney(newMoney);
-            this.setVisible(false);
             Home home = new Home(smartCard);
             home.setVisible(true);
+             this.setVisible(false);
         } else
             JOptionPane.showMessageDialog(this, "Nạp tiền thất bại", "ERROR", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btn_napActionPerformed

@@ -6,6 +6,7 @@
 package card.view;
 
 import card.connect.SmartCard;
+import card.connect.UserDAO;
 import card.model.User;
 import card.model.Cache;
 import java.util.logging.Level;
@@ -186,6 +187,10 @@ public class PINPanel extends javax.swing.JFrame {
         Cache.userCache.setMoney(money);
         byte[] imageBytes = smartCard.readImage();
         Cache.userCache.setAvatar(imageBytes);
+        byte[] publicKey = smartCard.receivePublicKey();
+        Cache.userCache.setPublicKey(publicKey);
+//         byte[] publicKey = UserDAO.gePublicKey(Cache.userCache.getId());
+//        Cache.userCache.setPublicKey(publicKey);
     }
     /**
      * @param args the command line arguments

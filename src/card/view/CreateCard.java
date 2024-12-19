@@ -7,6 +7,7 @@ package card.view;
 
 import card.common.ByteUtil;
 import card.connect.SmartCard;
+import card.model.Cache;
 import card.model.User;
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -340,6 +341,7 @@ public class CreateCard extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        savePublicKey();
         
         User user = new User();
         user.setId(user.generateId());
@@ -414,6 +416,11 @@ public class CreateCard extends javax.swing.JFrame {
     public boolean saveImageToCard() {
         int check = smartCard.saveImage(imageBytes);
         return check == 0x9000;
+    }
+    
+    public void savePublicKey() {
+        byte[] publicKey = smartCard.receivePublicKey();
+        Cache.userCache.setPublicKey(publicKey);
     }
 
 

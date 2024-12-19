@@ -22,19 +22,22 @@ public class User {
     private String bienSo;
     private Long money;
     private byte[]avatar;
-    private String publicKey;
+    private byte[] publicKey;
 
     public User(String id, String ten, String dob, String phone, String car_number, Long money) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public String getPublicKey() {
-        return publicKey;
-    }
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
+    
     public int getStatus() {
         return status;
+    }
+
+    public byte[] getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(byte[] publicKey) {
+        this.publicKey = publicKey;
     }
     public void setStatus(int status) {
         this.status = status;
@@ -47,14 +50,7 @@ public class User {
     }
     private int status;
     private int isDelete;
-    public User(String id, String fullName, String dateOfBirth, String phoneNumber, String bienSo, String publicKey) {
-        this.id = id;
-        this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
-        this.phoneNumber = phoneNumber;
-        this.bienSo = bienSo;
-        this.publicKey = publicKey;
-    }
+    
 
     public User(){};
     public User(String id, String fullName, String dateOfBirth, String phoneNumber, String bienSo) {
