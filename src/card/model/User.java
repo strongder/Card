@@ -136,12 +136,16 @@ public class User {
     
     public String generateId()
     {
+        
+        
+        //int idNumber = counter.getAndIncrement(); // Lấy giá trị hiện tại và tăng lên 1
+        //return String.format("%s%04d", PREFIX, idNumber); // Định dạng ID
         long currentTimeMillis = System.currentTimeMillis();
         
         // Định dạng thời gian đến phút
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String formattedDate = sdf.format(new Date(currentTimeMillis));
-        long generateId = System.currentTimeMillis();
+        //long generateId = System.currentTimeMillis();
         return PREFIX + formattedDate;
     }
 }
