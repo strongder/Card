@@ -9,12 +9,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author admin
  */
 public class User {
+    
+    private static final String PREFIX = "PC";
+    private static final AtomicInteger counter = new AtomicInteger(1);
     private String id;
     private String fullName;
     private String dateOfBirth;
@@ -132,7 +136,12 @@ public class User {
     
     public String generateId()
     {
+        long currentTimeMillis = System.currentTimeMillis();
+        
+        // Định dạng thời gian đến phút
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String formattedDate = sdf.format(new Date(currentTimeMillis));
         long generateId = System.currentTimeMillis();
-        return String.valueOf(generateId);
+        return PREFIX + formattedDate;
     }
 }

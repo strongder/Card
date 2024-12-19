@@ -12,7 +12,7 @@ public class JDBCUtil {
         Connection conn = null;
         String url = "jdbc:mysql://localhost:3306/parking_card";
         String username = "root";
-        String password = "1234567890";
+        String password = "123456789";
 
         try {
             conn = DriverManager.getConnection(url, username, password);
