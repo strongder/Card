@@ -8,19 +8,23 @@ package card.connect;
 import card.model.User;
 import card.model.User;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author admin
  */
 public class UserDAO {
-
+    
     public static void insertUser(User user) {
-        String sql = "INSERT INTO user (id, full_name, dob, phone, car_number,public_key) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user (id, full_name, dob, phone, car_number,public_key, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection connection = JDBCUtil.getConnection();
@@ -31,8 +35,7 @@ public class UserDAO {
             sttm.setString(4, user.getPhoneNumber());
             sttm.setString(5, user.getBienSo());
             sttm.setBytes(6, user.getPublicKey());
-             System.out.println(user.getPublicKey());
-            System.out.println("them thanh cong");
+            sttm.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
             sttm.execute();
 
         } catch (Exception e) {
@@ -41,7 +44,7 @@ public class UserDAO {
     }
 
     public static void updateUser(User user) {
-        String sql = "UPDATE user SET full_name = ?, dob = ?, phone = ?, car_number = ?, public_key = ? WHERE id = ?";
+        String sql = "UPDATE user SET full_name = ?, dob = ?, phone = ?, car_number = ?, public_key = ?, updated_at = ? WHERE id = ?";
 
         try {
             Connection connection = JDBCUtil.getConnection();
@@ -52,7 +55,7 @@ public class UserDAO {
             sttm.setString(3, user.getPhoneNumber());
             sttm.setString(4, user.getBienSo());
             sttm.setBytes(5, user.getPublicKey());
-
+            sttm.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
             sttm.execute();
 
         } catch (Exception e) {
@@ -120,31 +123,22 @@ public class UserDAO {
         }
     }
 
-    public static User getUserWithMaxId() {
-        String sql = "SELECT * FROM user WHERE id = (SELECT MAX(id) FROM user)";
-        User user = null;
+    public static String getUserWithMaxId() {
+        String sql = "SELECT id FROM user Order by created_at DESC limit 1";
+        String id = null;
 
         try {
             Connection connection = JDBCUtil.getConnection();
             PreparedStatement sttm = connection.prepareStatement(sql);
             ResultSet rs = sttm.executeQuery();
             while (rs.next()) {
-
-                String id = rs.getString("id");
-                String ten = rs.getString("full_name");
-                String dob = rs.getString("dob");
-                String phone = rs.getString("phone");
-                String car_number = rs.getString("car_number");
-                long money = Long.parseLong(rs.getString("money"));
-
-                user = new User(id, ten, dob, phone, car_number, money);
+                id = rs.getString("id");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return user;
+        return id;
     }
 
     public static byte[] gePublicKey(String userId) {
@@ -166,14 +160,12 @@ public class UserDAO {
     public static void updateStatus(String id, int status) {
 
         String sql = "UPDATE user SET status  = ? WHERE id = ?";
-
         try {
             Connection connection = JDBCUtil.getConnection();
             PreparedStatement sttm = connection.prepareStatement(sql);
             sttm.setInt(1, status);
             sttm.setString(2, id);
             sttm.execute();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,7 +173,6 @@ public class UserDAO {
 
     public static boolean checStatus(String id) {
         String sql = "Select count(*) from user where id = ? and status = 1 ";
-
         try {
             Connection connection = JDBCUtil.getConnection();
             PreparedStatement sttm = connection.prepareStatement(sql);

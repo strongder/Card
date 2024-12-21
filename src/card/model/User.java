@@ -5,8 +5,11 @@
  */
 package card.model;
 
+import card.connect.JDBCUtil;
+import card.connect.UserDAO;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,6 +30,24 @@ public class User {
     private Long money;
     private byte[]avatar;
     private byte[] publicKey;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public User(String id, String ten, String dob, String phone, String car_number, Long money) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -144,18 +165,20 @@ public class User {
         this.avatar = avatar;
     } 
     
-    public String generateId()
-    {
-        
-        
-        //int idNumber = counter.getAndIncrement(); // Lấy giá trị hiện tại và tăng lên 1
-        //return String.format("%s%04d", PREFIX, idNumber); // Định dạng ID
-        long currentTimeMillis = System.currentTimeMillis();
-        
-        // Định dạng thời gian đến phút
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String formattedDate = sdf.format(new Date(currentTimeMillis));
-        //long generateId = System.currentTimeMillis();
-        return PREFIX + formattedDate;
+    public String generateId() {
+    StringBuilder id = new StringBuilder("PC");
+    String idBefore = UserDAO.getUserWithMaxId(); // Lấy ID lớn nhất hiện tại
+    if (idBefore == null) {
+        return "PC0001";
+    } else {
+   
+        String subId = idBefore.substring(2); 
+        int numericPart = Integer.parseInt(subId);
+        numericPart++; // Tăng giá trị lên 1
+        String formattedNumber = String.format("%04d", numericPart);
+
+        return id.append(formattedNumber).toString();
     }
+}
+
 }

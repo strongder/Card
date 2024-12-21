@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
@@ -353,6 +354,7 @@ public class CreateCard extends javax.swing.JFrame {
         user.setBienSo(bienso);
         user.setAvatar(imageBytes);
         user.setPublicKey(publicKey);
+        user.setCreatedAt(LocalDateTime.now());
        
    
         if (smartCard.sendAllData(user) && saveImageToCard()) {
