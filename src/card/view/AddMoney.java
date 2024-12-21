@@ -6,6 +6,7 @@
 package card.view;
 
 import card.connect.SmartCard;
+import card.connect.UserDAO;
 import card.model.User;
 import card.model.Cache;
 import javax.swing.JOptionPane;
@@ -174,8 +175,10 @@ public class AddMoney extends javax.swing.JFrame {
 
         int check = smartCard.topUpcard(newMoney + "");
         if (check == 0x9000) {
+            UserDAO.addMoney(Cache.userCache, addMoney);
             JOptionPane.showMessageDialog(this, "Nạp tiền thành công!", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
             Cache.userCache.setMoney(newMoney);
+            
             Home home = new Home(smartCard);
             home.setVisible(true);
              this.setVisible(false);

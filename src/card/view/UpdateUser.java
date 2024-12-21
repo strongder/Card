@@ -7,6 +7,7 @@ package card.view;
 
 import card.common.ByteUtil;
 import card.connect.SmartCard;
+import card.connect.UserDAO;
 import card.model.User;
 import card.model.Cache;
 import java.awt.Image;
@@ -156,8 +157,8 @@ public class UpdateUser extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btn_chonanh, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_updateImage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(46, 46, 46)
+                        .addComponent(btn_updateImage, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -334,7 +335,9 @@ public class UpdateUser extends javax.swing.JFrame {
         user.setBienSo(bienso);
 
         if (smartCard.sendAllData(user)) {
+            UserDAO.updateUser(user);
             JOptionPane.showMessageDialog(this, "Thay đổi thông tin thành công", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+            
             Cache.userCache.setId(id);
             Cache.userCache.setId(id);
             Cache.userCache.setFullName(ten);

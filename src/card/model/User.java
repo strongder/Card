@@ -49,6 +49,16 @@ public class User {
     public int getIsDelete() {
         return isDelete;
     }
+
+    public User(String id, String fullName, String dateOfBirth, String phoneNumber, String bienSo, Long money, int status) {
+        this.id = id;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.bienSo = bienSo;
+        this.money = money;
+        this.status = status;
+    }
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
     }

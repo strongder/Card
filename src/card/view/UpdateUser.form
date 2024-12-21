@@ -65,10 +65,10 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="btn_chonanh" min="-2" pref="81" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btn_updateImage" min="-2" pref="49" max="-2" attributes="0"/>
+                          <Component id="btn_updateImage" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel7" min="-2" pref="73" max="-2" attributes="0"/>

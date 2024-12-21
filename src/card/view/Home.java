@@ -270,14 +270,14 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_capnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_capnhatActionPerformed
-        this.setVisible(false);
+        this.dispose();
         UpdateUser panel = new UpdateUser(smartCard);
         panel.setVisible(true);
 
     }//GEN-LAST:event_btn_capnhatActionPerformed
 
     private void btn_naptienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_naptienActionPerformed
-//        .this.setVisible(false);
+        this.dispose();
         AddMoney panel = new AddMoney(smartCard);
         panel.setVisible(true);
     }//GEN-LAST:event_btn_naptienActionPerformed
@@ -288,7 +288,7 @@ public class Home extends javax.swing.JFrame {
         smartCard.disconnectCard();
         AppletConnect panel = new AppletConnect();
         panel.setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_btn_thoatActionPerformed
 
     private void btn_doimapinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_doimapinActionPerformed

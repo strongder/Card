@@ -7,6 +7,7 @@ package card.view;
 
 import card.common.ByteUtil;
 import card.connect.SmartCard;
+import card.connect.UserDAO;
 import card.model.Cache;
 import card.model.User;
 import java.awt.BorderLayout;
@@ -40,12 +41,12 @@ public class CreateCard extends javax.swing.JFrame {
     SmartCard smartCard;
     Image image;
     public byte[] imageBytes;
-
     public CreateCard(SmartCard smartCard) {
         initComponents();
         this.smartCard = smartCard;
         this.setLocationRelativeTo(null);
         jDate.setDateFormatString("dd/MM/yyyy");
+        
     }
 
     /**
@@ -341,7 +342,8 @@ public class CreateCard extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        savePublicKey();
+        byte[] publicKey = smartCard.receivePublicKey();
+        Cache.userCache.setPublicKey(publicKey);
         
         User user = new User();
         user.setId(user.generateId());
@@ -350,11 +352,14 @@ public class CreateCard extends javax.swing.JFrame {
         user.setPhoneNumber(sdt);
         user.setBienSo(bienso);
         user.setAvatar(imageBytes);
-
+        user.setPublicKey(publicKey);
+       
+   
         if (smartCard.sendAllData(user) && saveImageToCard()) {
+            UserDAO.insertUser(user);
             JOptionPane.showMessageDialog(this, "Tạo thẻ thành công");
             PINPanel pin = new PINPanel(smartCard);
-            this.setVisible(false);
+            this.dispose();
             pin.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Tạo thẻ không thành công", "ERROR", JOptionPane.ERROR_MESSAGE);

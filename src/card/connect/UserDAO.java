@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 public class UserDAO {
 
     public static void insertUser(User user) {
-        String sql = "INSERT INTO user (id, full_name, dob, phone, car_number, public_key) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user (id, full_name, dob, phone, car_number,public_key) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             Connection connection = JDBCUtil.getConnection();
@@ -30,7 +30,8 @@ public class UserDAO {
             sttm.setString(3, user.getDateOfBirth());
             sttm.setString(4, user.getPhoneNumber());
             sttm.setString(5, user.getBienSo());
-//            sttm.setString(6, user.getPublicKey());
+            sttm.setBytes(6, user.getPublicKey());
+             System.out.println(user.getPublicKey());
             System.out.println("them thanh cong");
             sttm.execute();
 
@@ -50,7 +51,7 @@ public class UserDAO {
             sttm.setString(2, user.getDateOfBirth());
             sttm.setString(3, user.getPhoneNumber());
             sttm.setString(4, user.getBienSo());
-//            sttm.setString(5, user.getPublicKey());
+            sttm.setBytes(5, user.getPublicKey());
 
             sttm.execute();
 
@@ -74,6 +75,32 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static User getUser(String userId) {
+        String sql = "Select * from user where id = ?";
+        User user = null;
+        try {
+            Connection connection = JDBCUtil.getConnection();
+            PreparedStatement sttm = connection.prepareStatement(sql);
+            sttm.setString(1, userId);
+            ResultSet rs = sttm.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("full_name");
+                String dob = rs.getString("dob");
+                String phone = rs.getString("phone");
+                String bienSo = rs.getString("car_number");
+                long money = rs.getInt("money");
+                int status = rs.getInt("status");
+                user = new User(id, name, dob, phone, bienSo, money, status);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     public static void deductMoney(User user, double money) {
@@ -136,4 +163,37 @@ public class UserDAO {
         return publicKey;
     }
 
+    public static void updateStatus(String id, int status) {
+
+        String sql = "UPDATE user SET status  = ? WHERE id = ?";
+
+        try {
+            Connection connection = JDBCUtil.getConnection();
+            PreparedStatement sttm = connection.prepareStatement(sql);
+            sttm.setInt(1, status);
+            sttm.setString(2, id);
+            sttm.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean checStatus(String id) {
+        String sql = "Select count(*) from user where id = ? and status = 1 ";
+
+        try {
+            Connection connection = JDBCUtil.getConnection();
+            PreparedStatement sttm = connection.prepareStatement(sql);
+            sttm.setString(1, id);
+            ResultSet rs = sttm.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
